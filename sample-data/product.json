@@ -1,0 +1,16 @@
+[
+  {
+    "_id": {
+      "$oid": "ba67638ada7309c1921e4a2b"
+    },
+    "name": "Hops",
+    "version": 1
+  },
+  {
+    "_id": {
+      "$oid": "96607ce9dd152b37868c29de"
+    },
+    "name": "Malt",
+    "version": 1
+  }
+]

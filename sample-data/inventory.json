@@ -1,0 +1,36 @@
+[
+  {
+    "_id": {
+      "$oid": "d59823464661f3da6b642cc4"
+    },
+    "name": "Plain Amber",
+    "version": 1,
+    "productType": "Malt",
+    "description": "Plain Amber Malt",
+    "averagePrice": 4.13,
+    "amount": 1.00,
+    "unitOfMeasurement": "POUND",
+    "bestBeforeDate": { 
+      "$date": "2021-03-13T20:06:04.319Z" 
+    },
+    "neverExpires": false,
+    "availableStores": []
+  },
+  {
+    "_id": {
+      "$oid": "e6c0fb08a18c1166abfa7127"
+    },
+    "name": "Cluster Hops",
+    "version": 1,
+    "productType": "Hops",
+    "description": "Bittering Cluster Hops",
+    "averagePrice": 2.52,
+    "amount": 1.00,
+    "unitOfMeasurement": "OUNCE",
+    "bestBeforeDate": { 
+      "$date": "2022-03-13T20:06:04.319Z" 
+    },
+    "neverExpires": false,
+    "availableStores": []
+  }
+]

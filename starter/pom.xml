@@ -1,0 +1,422 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<groupId>com.starter</groupId>
+	<artifactId>starter</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>starter-fullstack</name>
+	<description>Fullstack Starter Project</description>
+
+  <properties>
+    <checkstyle.version>8.15</checkstyle.version>
+    <jacoco.version>0.8.5</jacoco.version>
+    <joelittlejohn.embedmongo.home>${user.home}/.embedmongo</joelittlejohn.embedmongo.home>
+    <joelittlejohn.embedmongo.version>0.4.1</joelittlejohn.embedmongo.version>
+    <joelittlejohn.embedmongo.downloadUrl>http://fastdl.mongodb.org/</joelittlejohn.embedmongo.downloadUrl>
+    <java.version>11</java.version>
+		<junit.version>4.12</junit.version>
+    <lombok.version>1.18.12</lombok.version>
+    <maven-checkstyle-plugin.version>3.1.1</maven-checkstyle-plugin.version>
+		<maven-compiler.version>3.8.0</maven-compiler.version>
+		<maven.properties.plugin.version>1.0.0</maven.properties.plugin.version>
+		<mongo.version>3.6.5</mongo.version>
+		<pmd.version>3.11.0</pmd.version>
+    <spotbugs.version>3.1.12.2</spotbugs.version>
+		<spring.boot.version>2.2.7.RELEASE</spring.boot.version>
+		<springdoc.version>1.3.9</springdoc.version>
+		<surefire.report.version>3.0.0-M3</surefire.report.version>
+	</properties>
+
+  <dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+			<version>${spring.boot.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-mongodb</artifactId>
+      <version>${spring.boot.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+			<version>${spring.boot.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<version>${spring.boot.version}</version>
+			<scope>test</scope>
+		</dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <version>${junit.version}</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>${spring.boot.version}</version>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-checkstyle-plugin</artifactId>
+				<version>${maven-checkstyle-plugin.version}</version>
+				<dependencies>
+					<dependency>
+						<groupId>com.puppycrawl.tools</groupId>
+						<artifactId>checkstyle</artifactId>
+						<version>${checkstyle.version}</version>
+					</dependency>
+				</dependencies>
+				<executions>
+					<execution>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<consoleOutput>true</consoleOutput>
+							<includeTestSourceDirectory>true</includeTestSourceDirectory>
+							<checkstyleRules>
+								<module name="Checker">
+									<module name="BeforeExecutionExclusionFileFilter">
+										<property name="fileNamePattern" value="module\-info\.java$"/>
+									</module>
+									<property name="charset" value="UTF-8" />
+									<property name="severity" value="error" />
+									<module name="FileTabCharacter" />
+									<module name="TreeWalker">
+										<property name="fileExtensions" value="java" />
+										<module name="ArrayTypeStyle">
+											<property name="javaStyle" value="true" />
+										</module>
+										<module name="EmptyBlock">
+											<property name="severity" value="warning" />
+											<property name="option" value="statement" />
+										</module>
+										<module name="EqualsHashCode" />
+										<module name="GenericWhitespace" />
+										<module name="IllegalCatch">
+											<property name="illegalClassNames" value="java.lang.Exception,java.lang.RuntimeException" />
+										</module>
+										<module name="Indentation">
+											<property name="basicOffset" value="2" />
+											<property name="braceAdjustment" value="0" />
+											<property name="caseIndent" value="2" />
+											<property name="throwsIndent" value="2" />
+											<property name="arrayInitIndent" value="2" />
+											<property name="lineWrappingIndentation" value="2" />
+										</module>
+										<module name="IllegalImport" />
+										<module name="IllegalThrows">
+											<property name="illegalClassNames" value="java.lang.Exception,java.lang.RuntimeException" />
+										</module>
+										<module name="ImportOrder">
+											<property name="separated" value="false" />
+										</module>
+										<module name="InnerAssignment" />
+										<module name="JavadocType">
+											<property name="allowUnknownTags" value="false" />
+											<property name="scope" value="private" />
+											<property name="allowedAnnotations" value="TestConfiguration,SpringBootTest,Profile,Data"/>
+										</module>
+										<module name="JavadocMethod">
+											<property name="allowMissingJavadoc" value="false" />
+											<property name="allowMissingParamTags" value="false" />
+											<property name="allowMissingPropertyJavadoc" value="true" />
+											<property name="allowMissingReturnTag" value="false" />
+											<property name="allowMissingThrowsTags" value="false" />
+											<property name="allowUndeclaredRTE" value="false" />
+											<property name="allowedAnnotations" value="Before,After,Bean,Pointcut" />
+											<property name="minLineCount" value="-1" />
+											<property name="scope" value="protected" />
+											<property name="validateThrows" value="true" />
+										</module>
+										<module name="LeftCurly">
+											<property name="option" value="eol" />
+										</module>
+										<module name="LineLength">
+											<property name="ignorePattern" value="^import" />
+											<property name="max" value="120" />
+										</module>
+										<module name="MethodParamPad">
+											<property name="allowLineBreaks" value="false" />
+											<property name="option" value="nospace" />
+										</module>
+										<module name="MissingOverride">
+											<property name="javaFiveCompatibility" value="false" />
+										</module>
+										<module name="MultipleVariableDeclarations" />
+										<module name="NeedBraces" />
+										<module name="NonEmptyAtclauseDescription" />
+										<module name="OneStatementPerLine" />
+										<module name="OneTopLevelClass" />
+										<module name="OuterTypeFilename" />
+										<module name="PackageDeclaration" />
+										<module name="ParenPad">
+											<property name="option" value="nospace" />
+										</module>
+										<module name="RedundantImport" />
+										<module name="RedundantModifier" />
+										<module name="RequireThis">
+											<property name="checkFields" value="true" />
+											<property name="checkMethods" value="true" />
+											<property name="validateOnlyOverlapping" value="true" />
+										</module>
+										<module name="RightCurly" />
+										<module name="StringLiteralEquality" />
+										<module name="TodoComment">
+											<property name="severity" value="warning"/>
+										</module>
+										<module name="TrailingComment" />
+										<module name="UnusedImports" />
+										<module name="VisibilityModifier">
+											<property name="packageAllowed" value="false" />
+											<property name="protectedAllowed" value="false" />
+										</module>
+										<module name="WhitespaceAfter" />
+										<module name="WhitespaceAround" />
+									</module>
+								</module>
+							</checkstyleRules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-surefire-plugin</artifactId>
+				<version>${surefire.report.version}</version>
+				<configuration>
+					<systemPropertyVariables>
+						<mongo.port>${embedmongo.port}</mongo.port>
+					</systemPropertyVariables>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>${maven-compiler.version}</version>
+				<configuration>
+					<source>11</source>
+					<target>11</target>
+					<fork>true</fork>
+				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>com.github.spotbugs</groupId>
+				<artifactId>spotbugs-maven-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>verify-spotbugs</id>
+						<goals>
+							<goal>check</goal>
+						</goals>
+						<configuration>
+							<threshold>Medium</threshold>
+							<classFilesDirectory>${project.build.outputDirectory}</classFilesDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-pmd-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-failsafe-plugin</artifactId>
+				<version>3.0.0-M3</version>
+				<executions>
+					<execution>
+						<id>integration-test</id>
+						<goals>
+							<goal>integration-test</goal>
+						</goals>
+						<configuration>
+							<systemPropertyVariables>
+								<mongo.port>${embedmongo.port}</mongo.port>
+							</systemPropertyVariables>
+						</configuration>
+					</execution>
+					<execution>
+						<id>verify</id>
+						<goals>
+							<goal>verify</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.jacoco</groupId>
+				<artifactId>jacoco-maven-plugin</artifactId>
+				<version>${jacoco.version}</version>
+				<configuration>
+					<append>true</append>
+					<excludes>
+						<exclude>**/*Config.*</exclude>
+						<exclude>**/sampledata/*Factory.*</exclude>
+					</excludes>
+				</configuration>
+				<executions>
+					<execution>
+						<id>agent-for-ut</id>
+						<goals>
+							<goal>prepare-agent</goal>
+						</goals>
+						<configuration>
+							<destFile>${sonar.jacoco.reportPaths}</destFile>
+						</configuration>
+					</execution>
+					<execution>
+						<id>agent-for-it</id>
+						<goals>
+							<goal>prepare-agent-integration</goal>
+						</goals>
+						<configuration>
+							<destFile>${sonar.jacoco.reportITPaths}</destFile>
+						</configuration>
+					</execution>
+					<execution>
+						<id>jacoco-site</id>
+						<goals>
+							<goal>report</goal>
+						</goals>
+					</execution>
+					<execution>
+						<id>jacoco-site-it</id>
+						<goals>
+							<goal>report-integration</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>properties-maven-plugin</artifactId>
+				<version>${maven.properties.plugin.version}</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>set-system-properties</goal>
+						</goals>
+						<configuration>
+							<properties>
+								<property>
+									<name>de.flapdoodle.embed.io.tmpdir</name>
+									<value>${joelittlejohn.embedmongo.home}</value>
+								</property>
+							</properties>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>com.github.joelittlejohn.embedmongo</groupId>
+				<artifactId>embedmongo-maven-plugin</artifactId>
+			</plugin>
+		</plugins>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-pmd-plugin</artifactId>
+					<version>${pmd.version}</version>
+					<executions>
+						<execution>
+							<goals>
+								<goal>check</goal>
+							</goals>
+							<configuration>
+								<verbose>true</verbose>
+							</configuration>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>com.github.spotbugs</groupId>
+					<artifactId>spotbugs-maven-plugin</artifactId>
+					<version>${spotbugs.version}</version>
+				</plugin>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+					<version>${spring.boot.version}</version>
+					<executions>
+						<execution>
+							<id>build-info</id>
+							<goals>
+								<goal>build-info</goal>
+							</goals>
+						</execution>
+						<execution>
+							<goals>
+								<goal>repackage</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<groupId>com.github.joelittlejohn.embedmongo</groupId>
+					<artifactId>embedmongo-maven-plugin</artifactId>
+					<version>${joelittlejohn.embedmongo.version}</version>
+					<executions>
+						<execution>
+							<id>start-test</id>
+							<phase>process-test-classes</phase>
+							<goals>
+								<goal>start</goal>
+							</goals>
+							<configuration>
+								<version>${mongo.version}</version>
+								<randomPort>true</randomPort>
+								<downloadPath>${joelittlejohn.embedmongo.downloadUrl}</downloadPath>
+								<unixSocketPrefix>${joelittlejohn.embedmongo.home}</unixSocketPrefix>
+							</configuration>
+						</execution>
+						<execution>
+							<id>stop-test</id>
+							<phase>prepare-package</phase>
+							<goals>
+								<goal>stop</goal>
+							</goals>
+						</execution>
+						<execution>
+							<id>start-its</id>
+							<phase>pre-integration-test</phase>
+							<goals>
+								<goal>start</goal>
+							</goals>
+							<configuration>
+								<version>${mongo.version}</version>
+								<randomPort>true</randomPort>
+								<downloadPath>${joelittlejohn.embedmongo.downloadUrl}</downloadPath>
+								<unixSocketPrefix>${joelittlejohn.embedmongo.home}</unixSocketPrefix>
+							</configuration>
+						</execution>
+						<execution>
+							<id>stop-its</id>
+							<phase>post-integration-test</phase>
+							<goals>
+								<goal>stop</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+	</build>
+</project>

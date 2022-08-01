@@ -47,6 +47,7 @@ public class InventoryDAOTest {
     System.out.print("The initial ID is: " + inventory1.getId());
     this.inventoryDAO.create(inventory1);
     System.out.println("After Create Method ID: " + inventory1.getId());
+    Assert.assertTrue(inventory1.getId() != "877241");
   }
   /**
    * Test Find All method.

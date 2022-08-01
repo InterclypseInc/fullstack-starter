@@ -1,0 +1,4 @@
+-------------------------------------------------------------------------------
+Test set: com.starter.fullstack.dao.ProductDAOTest
+-------------------------------------------------------------------------------
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 0.349 s - in com.starter.fullstack.dao.ProductDAOTest

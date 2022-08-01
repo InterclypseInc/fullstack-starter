@@ -1,0 +1,8 @@
+-------------------------------------------------------------------------------
+Test set: com.starter.fullstack.dao.InventoryDAOTest
+-------------------------------------------------------------------------------
+Tests run: 2, Failures: 1, Errors: 0, Skipped: 0, Time elapsed: 0.453 s <<< FAILURE! - in com.starter.fullstack.dao.InventoryDAOTest
+createTest  Time elapsed: 0.046 s  <<< FAILURE!
+java.lang.AssertionError: Values should be different. Actual: 62db713a868abc3a666887d7
+	at com.starter.fullstack.dao.InventoryDAOTest.createTest(InventoryDAOTest.java:50)
+

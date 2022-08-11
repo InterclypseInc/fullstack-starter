@@ -1,5 +1,5 @@
 package com.starter.fullstack.dao;
-
+import static org.springframework.data.mongodb.core.query.Criteria.where;
 import com.starter.fullstack.api.Inventory;
 import java.util.List;
 import java.util.Optional;
@@ -8,7 +8,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.data.mongodb.core.index.IndexOperations;
-import org.springframework.util.Assert;
+import org.springframework.data.mongodb.core.query.Query;
+//import org.springframework.util.Assert;
 
 /**
  * Inventory DAO
@@ -18,12 +19,12 @@ public class InventoryDAO {
   private static final String NAME = "name";
   private static final String PRODUCT_TYPE = "productType";
 
+
   /**
    * Default Constructor.
    * @param mongoTemplate MongoTemplate.
    */
   public InventoryDAO(MongoTemplate mongoTemplate) {
-    Assert.notNull(mongoTemplate, "MongoTemplate must not be null.");
     this.mongoTemplate = mongoTemplate;
   }
 
@@ -51,8 +52,10 @@ public class InventoryDAO {
    * @return Created/Updated Inventory.
    */
   public Inventory create(Inventory inventory) {
-    // TODO
-    return null;
+    // This method should insert a new Inventory object into the Mongo Collect and set the Mongo ID to Null
+    inventory.setId(null);
+    this.mongoTemplate.insert(inventory);
+    return inventory;
   }
 
   /**
@@ -82,7 +85,6 @@ public class InventoryDAO {
    * @return Deleted Inventory.
    */
   public Optional<Inventory> delete(String id) {
-    // TODO
-    return Optional.empty();
+    return Optional.of(this.mongoTemplate.findAndRemove(new Query(where("_id").is(id)), Inventory.class));
   }
 }

@@ -49,4 +49,20 @@ public class InventoryDAOTest {
     List<Inventory> actualInventory = this.inventoryDAO.findAll();
     Assert.assertFalse(actualInventory.isEmpty());
   }
+
+  /**
+   * createDaoTest checks if the createDao method is working as intended in InventoryDao file.
+   */
+  public void createDaoTest() {
+    Inventory inventory = new Inventory();
+    String little = "Like";
+    inventory.setId(little);
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    this.mongoTemplate.save(inventory);
+    List<Inventory> actualInventory = this.inventoryDAO.findAll();
+    Inventory actual = this.inventoryDAO.create(inventory);
+    Assert.assertNotEquals(little, actual.getId());
+    Assert.assertFalse(actualInventory.isEmpty());
+  }
 }

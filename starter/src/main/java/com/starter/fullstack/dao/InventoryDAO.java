@@ -53,8 +53,7 @@ public class InventoryDAO {
   public Inventory create(Inventory inventory) {
     // TODO
     inventory.setId(null);
-    this.mongoTemplate.insert(inventory);
-    return inventory;
+    return this.mongoTemplate.insert(inventory);
   }
 
   /**

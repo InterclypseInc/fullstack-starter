@@ -55,12 +55,12 @@ public class InventoryDAOTest {
    */
   @Test
   public void createInsertsInventory() {
-    List<Inventory> existingInventory = this.inventoryDAO.findAll();
+    List<Inventory> existingInventory = this.mongoTemplate.findAll(Inventory.class);
     Inventory inventory = new Inventory();
     inventory.setName(NAME);
     inventory.setProductType(PRODUCT_TYPE);
     this.inventoryDAO.create(inventory);
-    List<Inventory> inventoryPostInsertion = this.inventoryDAO.findAll();
+    List<Inventory> inventoryPostInsertion = this.mongoTemplate.findAll(Inventory.class);
     Assert.assertTrue(inventoryPostInsertion.size() == existingInventory.size() + 1);
   }
 }

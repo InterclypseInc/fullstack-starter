@@ -60,12 +60,12 @@ public class InventoryDAOTest {
     inventory.setId("wombat");
     inventory.setName(NAME);
     inventory.setProductType(PRODUCT_TYPE);
-    Inventory returned inventory = this.inventoryDAO.create(inventory);
+    Inventory returnedInventory = this.inventoryDAO.create(inventory);
     List<Inventory> inventoryPostInsertion = this.mongoTemplate.findAll(Inventory.class);
     Inventory createdInventory = this.mongoTemplate.findById(returnedInventory.getId(), Inventory.class); 
     Assert.assertTrue(inventoryPostInsertion.size() == existingInventory.size() + 1);
-    Assert.assertTrue(returnedInventory.getId() != "wombat");
-    Assert.assertTrue(createdInventory.getName() == NAME);
-    Assert.assertTrue(createdInventory.getProductType() == PRODUCT_TYPE);
+    Assert.assertFalse(returnedInventory.getId().equals("wombat"));
+    Assert.assertTrue(createdInventory.getName().equals(NAME));
+    Assert.assertTrue(createdInventory.getProductType().equals(PRODUCT_TYPE));
   }
 }

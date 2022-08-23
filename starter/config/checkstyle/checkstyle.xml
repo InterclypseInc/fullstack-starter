@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!DOCTYPE module PUBLIC
+        "-//Checkstyle//DTD Checkstyle Configuration 1.3//EN"
+        "https://checkstyle.org/dtds/configuration_1_3.dtd">
+<module name="Checker">
+    <module name="LineLength">
+        <property name="ignorePattern" value="^import" />
+        <property name="max" value="120" />
+    </module>
+    <module name="BeforeExecutionExclusionFileFilter">
+        <property name="fileNamePattern" value="module\-info\.java$"/>
+    </module>
+    <property name="charset" value="UTF-8" />
+    <property name="severity" value="error" />
+    <module name="FileTabCharacter" />
+    <module name="TreeWalker">
+        <property name="fileExtensions" value="java" />
+        <module name="ArrayTypeStyle">
+            <property name="javaStyle" value="true" />
+        </module>
+        <module name="EmptyBlock">
+            <property name="severity" value="warning" />
+            <property name="option" value="statement" />
+        </module>
+        <module name="EqualsHashCode" />
+        <module name="GenericWhitespace" />
+        <module name="IllegalCatch">
+            <property name="illegalClassNames" value="java.lang.Exception,java.lang.RuntimeException" />
+        </module>
+        <module name="Indentation">
+            <property name="basicOffset" value="2" />
+            <property name="braceAdjustment" value="0" />
+            <property name="caseIndent" value="2" />
+            <property name="throwsIndent" value="2" />
+            <property name="arrayInitIndent" value="2" />
+            <property name="lineWrappingIndentation" value="2" />
+        </module>
+        <module name="IllegalImport" />
+        <module name="IllegalThrows">
+            <property name="illegalClassNames" value="java.lang.Exception,java.lang.RuntimeException" />
+        </module>
+        <module name="ImportOrder">
+            <property name="separated" value="false" />
+        </module>
+        <module name="InnerAssignment" />
+        <module name="JavadocType">
+            <property name="allowUnknownTags" value="false" />
+            <property name="scope" value="private" />
+            <property name="allowedAnnotations" value="TestConfiguration,SpringBootTest,Profile,Data"/>
+        </module>
+        <module name="JavadocMethod">
+            <!--property name="allowMissingJavadoc" value="false" /-->
+            <property name="allowMissingParamTags" value="false" />
+            <!--property name="allowMissingPropertyJavadoc" value="true" /-->
+            <property name="allowMissingReturnTag" value="false" />
+            <!--property name="allowMissingThrowsTags" value="false" /-->
+            <!--property name="allowUndeclaredRTE" value="false" /-->
+            <property name="allowedAnnotations" value="Before,After,Bean,Pointcut" />
+            <!--property name="minLineCount" value="-1" /-->
+            <property name="scope" value="protected" />
+            <property name="validateThrows" value="true" />
+        </module>
+        <module name="LeftCurly">
+            <property name="option" value="eol" />
+        </module>
+        <module name="MethodParamPad">
+            <property name="allowLineBreaks" value="false" />
+            <property name="option" value="nospace" />
+        </module>
+        <module name="MissingOverride">
+            <property name="javaFiveCompatibility" value="false" />
+        </module>
+        <module name="MultipleVariableDeclarations" />
+        <module name="NeedBraces" />
+        <module name="NonEmptyAtclauseDescription" />
+        <module name="OneStatementPerLine" />
+        <module name="OneTopLevelClass" />
+        <module name="OuterTypeFilename" />
+        <module name="PackageDeclaration" />
+        <module name="ParenPad">
+            <property name="option" value="nospace" />
+        </module>
+        <module name="RedundantImport" />
+        <module name="RedundantModifier" />
+        <module name="RequireThis">
+            <property name="checkFields" value="true" />
+            <property name="checkMethods" value="true" />
+            <property name="validateOnlyOverlapping" value="true" />
+        </module>
+        <module name="RightCurly" />
+        <module name="StringLiteralEquality" />
+        <module name="TodoComment">
+            <property name="severity" value="warning"/>
+        </module>
+        <module name="TrailingComment" />
+        <module name="UnusedImports" />
+        <module name="VisibilityModifier">
+            <property name="packageAllowed" value="false" />
+            <property name="protectedAllowed" value="false" />
+        </module>
+        <module name="WhitespaceAfter" />
+        <module name="WhitespaceAround" />
+    </module>
+</module>

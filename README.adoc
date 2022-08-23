@@ -1,35 +1,38 @@
 = Welcome To The Full-Stack Starter Project
 
-This project will assist you in building the critical skills necessary to complete tasks concerning both the
-Front-End and Back-End of a web application.
+This project will assist you in building the critical skills necessary to complete tasks concerning both the Front-End (React) and Back-End (Java) of a web application.
 
-. Please follow the instructions on the https://gogs.caifos.us/Sofiac/incubator-documentation/src/branch/master/fullstack[Incubator Full Stack Docs]
-to get your environment setup.
 . Fork this repository. In the top right of this page you'll see a fork option. Click that and accept all the default options.
-. Now you should be in your users forked repo. To verify this you should see your.username/fullstack-starter in the top left/url.
-. Clone your forked repository to your environment via ssh `git@gogs.caifos.us:$USER/fullstack-starter.git`
+. Now you should be in your users forked repo. To verify this you should see `your.username/fullstack-starter` in the top left/url.
+. Clone your forked repository to your environment via git+ssh:
+
+    git clone git@github.com:<your_username_here>/fullstack-starter.git
+
+== Setup
+We have provided some sample data for you to use. Running the following command will clear out any existing data in the database and re-import the sample data.
+
+    ./sample-data/import.sh
 
 == Back-End
+The backend java code can be found in the `starter` folder.
 
-. Before anything else, we need to populate our local databases with the sample data.For your convenience, we
-have included a script that will automatically import the json data for you, so all you need to do is run
-it.From the fullstack-starter root directory, enter the following command: `./sample-data/import.sh`
+. In order to run the web application, we need to compile, or "build", the data objects and classes from the back-end. Enter the following command:
 
-. Next `cd` into the starter directory
+    gradle build
 
-. In order to run the web application, we need to compile, or "build", the data objects and classes from the
-back-end.Enter the following command: `mvn clean install`
+. Next, we are ready to run the back-end of the application. Enter the following command:
 
-. Next, we are ready to run the back-end of the application.Enter the following command: `mvn spring-boot:run`
+    gradle bootRun
 
 == Front-End
+The front end part of the project can be found in the `ui` folder.
 
-. In a new terminal window, navigate back to the fullstack-starter root directory
-. Next, `cd` into the ui directory
-. In order to run the front-end, we must first resolve any dependencies that the project relies on.Enter the
-following command: `yarn`
+. In order to run the front-end, we must first resolve any dependencies that the project relies on. Enter the following command:
 
-. After the dependencies have been resolved, we are ready to run the front-end of the application.In the
-same directory, enter the following command: `yarn start`
-. Lastly, to view the operating front-end, navigate to https://localhost:3000[localhost:3000] in your preferred
-browser.
+    yarn install
+
+. After the dependencies have been resolved, we are ready to run the front-end of the application. In the same directory, enter the following command:
+
+    yarn start
+
+. Lastly, to view the operating front-end, navigate to https://localhost:3000[localhost:3000] in your preferred browser.

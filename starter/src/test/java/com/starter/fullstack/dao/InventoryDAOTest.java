@@ -64,8 +64,6 @@ public class InventoryDAOTest {
     List<Inventory> inventoryPostInsertion = this.mongoTemplate.findAll(Inventory.class);
     Inventory createdInventory = this.mongoTemplate.findById(returnedInventory.getId(), Inventory.class); 
     Assert.assertTrue(inventoryPostInsertion.size() == existingInventory.size() + 1);
-    Assert.assertFalse(returnedInventory.getId().equals("wombat"));
-    Assert.assertTrue(createdInventory.getName().equals(NAME));
-    Assert.assertTrue(createdInventory.getProductType().equals(PRODUCT_TYPE));
+    Assert.assertTrue(createdInventory.getId().equals(returnedInventory.getId()));
   }
 }

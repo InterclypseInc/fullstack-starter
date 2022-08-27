@@ -51,8 +51,9 @@ public class InventoryDAO {
    * @return Created/Updated Inventory.
    */
   public Inventory create(Inventory inventory) {
-    // TODO
-    return null;
+    Assert.notNull(inventory, "The inventory item provided must not be null.");
+    inventory.setId(null);
+    return this.mongoTemplate.save(inventory);
   }
 
   /**

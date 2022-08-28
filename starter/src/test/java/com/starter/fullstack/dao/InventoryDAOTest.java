@@ -3,6 +3,7 @@ package com.starter.fullstack.dao;
 import com.starter.fullstack.api.Inventory;
 import com.starter.fullstack.config.EmbedMongoClientOverrideConfig;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Resource;
 import org.junit.After;
 import org.junit.Assert;
@@ -65,5 +66,48 @@ public class InventoryDAOTest {
     Inventory createdInventory = this.mongoTemplate.findById(returnedInventory.getId(), Inventory.class); 
     Assert.assertTrue(inventoryPostInsertion.size() == existingInventory.size() + 1);
     Assert.assertTrue(createdInventory.getId().equals(returnedInventory.getId()));
+  }
+  
+  /**
+   * Test Delete method with valid id.
+   */
+  @Test
+  public void delete() {
+    // Put an inventory in the databse so there's something to delete
+    Inventory inventory = new Inventory();
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    // Save the id upon insertion to check against when we delete it
+    Inventory savedInventory = mongoTemplate.save(inventory);
+    String targetId = savedInventory.getId();
+    // Count number of inventories in collection to make sure it's 1 less after a deletion
+    List<Inventory> existingInventories = this.mongoTemplate.findAll(Inventory.class);
+    // Delete an inventory, and check id of deleted inventory against the id we saved earlier
+    Optional<Inventory> deletedInventory = this.inventoryDAO.delete(targetId);
+    // Check size of collection post deletion
+    List<Inventory> inventoryPostDeletion = this.mongoTemplate.findAll(Inventory.class);
+    // Check that id of deleted inventory matches our target id
+    Assert.assertTrue(deletedInventory.map(Inventory::getId).orElse("default").equals(targetId));
+    // Check that size of collection has decreased by 1
+    Assert.assertTrue(inventoryPostDeletion.size() == existingInventories.size() - 1);
+  }
+
+  /**
+   * Test Delete method with invalid id
+   */
+  @Test
+  public void deleteAndProvideInvalidId() {
+    // Put an inventory in the collection so there's something to delete
+    Inventory inventory = new Inventory();
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    Inventory savedInventory = mongoTemplate.save(inventory);
+    // Count number of inventories in collection to make sure it's unchanged after this deletion attempt
+    List<Inventory> existingInventories = this.mongoTemplate.findAll(Inventory.class);
+    // Attempt deletion but provide invalid id
+    Optional<Inventory> deletedInventory = this.inventoryDAO.delete("wombat");
+    // Check that size of collection is unchanged
+    List<Inventory> inventoryPostDeletion = this.mongoTemplate.findAll(Inventory.class);
+    Assert.assertTrue(inventoryPostDeletion.size() == existingInventories.size());
   }
 }

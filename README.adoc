@@ -18,11 +18,11 @@ The backend java code can be found in the `starter` folder.
 
 . In order to run the web application, we need to compile, or "build", the data objects and classes from the back-end. Enter the following command:
 
-    gradle build
+    ./gradlew build
 
 . Next, we are ready to run the back-end of the application. Enter the following command:
 
-    gradle bootRun
+    ./gradlew bootRun
 
 == Front-End
 The front end part of the project can be found in the `ui` folder.

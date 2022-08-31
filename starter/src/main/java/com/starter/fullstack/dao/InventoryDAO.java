@@ -85,6 +85,7 @@ public class InventoryDAO {
    * @return Deleted Inventory.
    */
   public Optional<Inventory> delete(String id) {
+    Assert.hasText(id, "The id provided must not be blank.");
     Query query = new Query();
     query.addCriteria(Criteria.where("id").is(id));
     Inventory deletedInventory = this.mongoTemplate.findAndRemove(query, Inventory.class);

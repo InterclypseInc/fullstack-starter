@@ -77,7 +77,6 @@ public class InventoryDAOTest {
     Inventory inventory = new Inventory();
     inventory.setName(NAME);
     inventory.setProductType(PRODUCT_TYPE);
-    inventory.setId(null);
     // Save the id upon insertion to check against when we delete it
     Inventory savedInventory = mongoTemplate.save(inventory);
     String targetId = savedInventory.getId();
@@ -97,18 +96,17 @@ public class InventoryDAOTest {
   /**
    * Test Delete method with invalid id
    */
-  @Test(expected = IllegalArgumentException.class)
-  public void deleteAndProvideInvalidIdThrowsIllegalArgumentException() {
+  @Test
+  public void deleteAndProvideInvalidId() {
     // Put an inventory in the collection so there's something to delete
     Inventory inventory = new Inventory();
     inventory.setName(NAME);
     inventory.setProductType(PRODUCT_TYPE);
-    inventory.setId(null);
     Inventory savedInventory = mongoTemplate.save(inventory);
     // Count number of inventories in collection to make sure it's unchanged after this deletion attempt
     List<Inventory> existingInventories = this.mongoTemplate.findAll(Inventory.class);
     // Attempt deletion but provide invalid id
-    Optional<Inventory> deletedInventory = this.inventoryDAO.delete("");
+    Optional<Inventory> deletedInventory = this.inventoryDAO.delete("wombat");
     // Check that size of collection is unchanged
     List<Inventory> inventoryPostDeletion = this.mongoTemplate.findAll(Inventory.class);
     Assert.assertTrue(inventoryPostDeletion.size() == existingInventories.size());

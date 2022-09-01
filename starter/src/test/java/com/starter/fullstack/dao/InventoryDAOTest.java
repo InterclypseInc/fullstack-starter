@@ -1,52 +1,35 @@
-package com.starter.fullstack.dao;
-
-import com.starter.fullstack.api.Inventory;
-import com.starter.fullstack.config.EmbedMongoClientOverrideConfig;
-import java.util.List;
-import javax.annotation.Resource;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mock;
+import org.mockito.Mockito; // Library used to mock classes and methods
+import org.mockito.MockitoAnnotations;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringRunner;
 
-/**
- * Test Inventory DAO.
- */
-@ContextConfiguration(classes = {EmbedMongoClientOverrideConfig.class})
-@DataMongoTest
-@RunWith(SpringRunner.class)
 public class InventoryDAOTest {
-  @Resource
-  private MongoTemplate mongoTemplate;
-  private InventoryDAO inventoryDAO;
-  private static final String NAME = "Amber";
-  private static final String PRODUCT_TYPE = "hops";
 
-  @Before
-  public void setup() {
-    this.inventoryDAO = new InventoryDAO(this.mongoTemplate);
-  }
+    @Mock private MongoTemplate mockMongoTemplate;
 
-  @After
-  public void tearDown() {
-    this.mongoTemplate.dropCollection(Inventory.class);
-  }
+    @BeforeEach
+    public void beforeEach() {
+        MockitoAnnotations.openMocks(this); // Initialize the mock
+    }
+     // Modified by Michel T. on 08/30/22. ****Ready For Review***
 
-  /**
-   * Test Find All method.
-   */
-  @Test
-  public void findAll() {
-    Inventory inventory = new Inventory();
-    inventory.setName(NAME);
-    inventory.setProductType(PRODUCT_TYPE);
-    this.mongoTemplate.save(inventory);
-    List<Inventory> actualInventory = this.inventoryDAO.findAll();
-    Assert.assertFalse(actualInventory.isEmpty());
-  }
+    @Test
+    public void create() {
+        // Follows unit testing AAA (Arrange/Act/Assert)
+        // Arrange
+        var inventoryDAO = new InventoryDAO(mockMongoTemplate); // Create your object injecting the mock
+        var inventory = new Inventory();
+
+        Mockito.when(mockMongoTemplate.insert(inventory)).thenReturn(inventory); // Set what your mock should do when it is executed with the parameter "inventory"
+
+        // Act
+        var actual = inventoryDAO.create(inventory);
+
+        // Assert
+        Assertions.assertNull(actual.getId());
+        Mockito.verify(mockMongoTemplate, Mockito.times(1)).insert(inventory); // Verify the "insert" was executed once with 1 time with the parameter "inventory"
+    }
 }

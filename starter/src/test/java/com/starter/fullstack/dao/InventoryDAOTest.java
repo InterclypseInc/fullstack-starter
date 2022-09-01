@@ -87,8 +87,7 @@ public class InventoryDAOTest {
     // Check size of collection post deletion
     List<Inventory> inventoryPostDeletion = this.mongoTemplate.findAll(Inventory.class);
     // Check that id of deleted inventory matches our target id
-    Assert.assertTrue(deletedInventory.isPresent());
-    Assert.assertTrue(deletedInventory.orElseThrow().getId().equals(inventory.getId()));
+    Assert.assertTrue(deletedInventory.map(Inventory::getId).orElse("default").equals(targetId));
     // Check that size of collection has decreased by 1
     Assert.assertTrue(inventoryPostDeletion.size() == existingInventories.size() - 1);
   }

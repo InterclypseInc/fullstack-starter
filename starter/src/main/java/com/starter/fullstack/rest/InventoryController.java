@@ -52,12 +52,12 @@ public class InventoryController {
   /**
    * Delete Inventory By Id
    *
-   * @param id id.
-   * @return Inventory
+   * @param ids ids.
    */
   @DeleteMapping
-  public Inventory deleteInventory(@RequestBody String id) {
-    return this.inventoryDAO.delete(id).orElse(null);
+  public void deleteInventory(@RequestBody List<String> ids) {
+    Assert.notEmpty(ids, "product Ids were not provided");
+    this.inventoryDAO.delete(ids);
   }
 }
 

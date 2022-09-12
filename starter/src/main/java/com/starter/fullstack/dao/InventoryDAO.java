@@ -81,14 +81,13 @@ public class InventoryDAO {
 
   /**
    * Delete Inventory By Id.
-   * @param id Id of Inventory.
-   * @return Deleted Inventory.
+   * @param ids Ids of Inventories.
+   * @return Deleted Inventories.
    */
-  public Optional<Inventory> delete(String id) {
-    Assert.hasText(id, "The id provided must not be blank.");
+  public Optional<List<Inventory>> delete(List<String> ids) {
     Query query = new Query();
-    query.addCriteria(Criteria.where("id").is(id));
-    Inventory deletedInventory = this.mongoTemplate.findAndRemove(query, Inventory.class);
-    return Optional.ofNullable(deletedInventory);
+    query.addCriteria(Criteria.where("id").in(ids));
+    List<Inventory> deletedInventories = this.mongoTemplate.findAllAndRemove(query, Inventory.class);
+    return Optional.ofNullable(deletedInventories);
   }
 }

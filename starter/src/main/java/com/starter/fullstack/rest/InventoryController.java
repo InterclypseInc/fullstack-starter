@@ -56,7 +56,7 @@ public class InventoryController {
    */
   @DeleteMapping
   public void deleteInventory(@RequestBody List<String> ids) {
-    Assert.notEmpty(ids, "product Ids were not provided");
+    Assert.notEmpty(ids, "Inventory Ids were not provided");
     this.inventoryDAO.delete(ids);
   }
 }

@@ -64,5 +64,7 @@ public class InventoryDAOTest {
         Inventory actual = inventoryDAO.create(inventory);
         assertNotNull(actual);
         assertNotNull(actual.getName());
+        assertNotNull(actual.getId());
 	}
 }
+

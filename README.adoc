@@ -70,10 +70,11 @@ The front end part of the project can be found in the `ui` folder.
 
 . In order to run the front-end, we must first resolve any dependencies that the project relies on. Enter the following command:
 
-    yarn install
+    npm install
 
 . After the dependencies have been resolved, we are ready to run the front-end of the application. In the same directory, enter the following command:
 
-    yarn start
+    npm start
 
 . Lastly, to view the operating front-end, navigate to https://localhost:3000[localhost:3000] in your preferred browser.
+

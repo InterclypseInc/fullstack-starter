@@ -49,4 +49,19 @@ public class InventoryDAOTest {
     List<Inventory> actualInventory = this.inventoryDAO.findAll();
     Assert.assertFalse(actualInventory.isEmpty());
   }
+  
+   /**
+   * Test create method.
+   */ 
+  @Test
+  public void create() {
+    Inventory inventory = new Inventory();
+    inventory.setId(null);
+    inventory = this.inventoryDAO.create(inventory);
+    
+    // would it be better to write separate tests to verify 1) the inventory is saved and 2) that the value is null?
+    Assert.assertNotNull(inventory.getId());
+    List<Inventory> actualInventory = this.inventoryDAO.findAll();
+    Assert.assertFalse(actualInventory.isEmpty());
+  }
 }

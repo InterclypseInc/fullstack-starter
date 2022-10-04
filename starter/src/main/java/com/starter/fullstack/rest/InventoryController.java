@@ -18,7 +18,7 @@ import com.starter.fullstack.dao.InventoryDAO;
  * Inventory Controller.
  * 
  * Modified by Michel T. on 09/29/22 Ready for review!
- * Updated on 10/03/22
+ * Updated on 10/03/22 by Michel T.
  */
 @RestController
 @RequestMapping("/inventory")

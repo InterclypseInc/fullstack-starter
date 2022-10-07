@@ -53,20 +53,8 @@ public class InventoryDAO {
    */
   public Inventory create(Inventory inventory) {
     // TODO
-    //String s = "test";
-    //mongoTemplate.insert(s);
-    
-    //inventory.setName(NAME);
-    //inventory.setProductType(PRODUCT_TYPE);
-    
-    this.mongoTemplate.save(inventory);
-    // List<Inventory> actualInventory = this.inventoryDAO.findAll();
-
-    //Inventory savedInventory;
-    //savedInventory.setName = this.mongoTemplate.getCollection(inventory.NAME);
-    //savedInventory.setProductType = this.mongoTemplate.
-    
-    return inventory;
+    Inventory savedInventory = this.mongoTemplate.save(inventory);
+    return savedInventory;
   }
 
   /**

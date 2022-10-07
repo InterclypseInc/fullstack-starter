@@ -11,9 +11,11 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-
+    
 /**
  * Test Inventory DAO.
  */
@@ -50,38 +52,22 @@ public class InventoryDAOTest {
     Assert.assertFalse(actualInventory.isEmpty());
   }
 
+  /**
+   * Test create method.
+   */  
   @Test
   public void create() {
-    //System.out.println("Create Test");
-    //String s = "test";
-    //this.mongoTemplate.insert(s);    
-    //Assert.assertTrue(this.mongoTemplate.collectionExists("test"));
-
-
     Inventory inventory = new Inventory();
     inventory.setName(NAME);
     inventory.setProductType(PRODUCT_TYPE);
-    this.inventoryDAO.create(inventory);
-    List<Inventory> actualInventory =
-	this.mongoTemplate.findAll(Inventory.class);
+    Inventory savedInventory = this.inventoryDAO.create(inventory);
 
+    Query query = new Query();
+    query.addCriteria(Criteria.where("name").is("Amber"));
+    Assert.assertTrue(mongoTemplate.exists(query, Inventory.class, "inventory"));
+    query.addCriteria(Criteria.where("productType").is("hops"));
+    Assert.assertTrue(mongoTemplate.exists(query, Inventory.class, "inventory"));
 
-    boolean inventoryFound = false;
-    
-    for (int i = 0; i < actualInventory.size(); i++) {
-	if (actualInventory.get(i) == inventory)
-	    inventoryFound = true;
-    }
-    Assert.assertTrue(inventoryFound);
-    
-
-    
-    /*
-    if (Assert.assertTrue(this.mongoTemplate.collectionExists("test")))
-	System.out.println("Create Passed");
-    else
-	System.out.println("Create Failed");
-    */
-  }
-    
+    Assert.assertTrue(savedInventory == inventory);
+  }    
 }

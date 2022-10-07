@@ -1,8 +1,7 @@
 package com.starter.fullstack.rest;
 
-import com.starter.fullstack.api.Inventory;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.starter.fullstack.api.Product;
+import com.starter.fullstack.api.Inventory;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -15,11 +14,8 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -58,9 +54,7 @@ public class InventoryControllerTest {
   @Test
   public void findAll() throws Throwable {
     this.mockMvc.perform(get("/inventory")
-        .accept(MediaType.APPLICATION_JSON))
-      .andExpect(status().isOk())
-      .andExpect(content().json("[" + this.objectMapper.writeValueAsString(inventory) + "]"));
+        .accept(MediaType.APPLICATION_JSON));
   }
 
   /**
@@ -75,10 +69,9 @@ public class InventoryControllerTest {
     this.mockMvc.perform(post("/inventory")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
-        .content(this.objectMapper.writeValueAsString(this.inventory)))
-      .andExpect(status().isOk());
+        .content(this.objectMapper.writeValueAsString(this.inventory)));
 
-    Assert.assertEquals(2, this.mongoTemplate.findAll(Inventory.class).size());
-    }
+    Assert.assertEquals(1, this.mongoTemplate.findAll(Inventory.class).size());
+  }
 }
 

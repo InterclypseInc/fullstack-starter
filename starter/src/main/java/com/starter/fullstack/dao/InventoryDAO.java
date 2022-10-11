@@ -1,4 +1,3 @@
-
 package com.starter.fullstack.dao;
 
 import com.starter.fullstack.api.Inventory;
@@ -53,8 +52,12 @@ public class InventoryDAO {
    */
   public Inventory create(Inventory inventory) {
     // TODO
-    Inventory savedInventory = this.mongoTemplate.save(inventory);
-    return savedInventory;
+    if (inventory.getName() != null) {
+      Inventory savedInventory = this.mongoTemplate.save(inventory);
+      return savedInventory;
+    } else {
+      return null;
+    }
   }
 
   /**

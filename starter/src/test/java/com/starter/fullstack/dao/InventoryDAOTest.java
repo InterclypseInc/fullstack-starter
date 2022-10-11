@@ -11,11 +11,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Criteria;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-    
 /**
  * Test Inventory DAO.
  */
@@ -61,13 +58,6 @@ public class InventoryDAOTest {
     inventory.setName(NAME);
     inventory.setProductType(PRODUCT_TYPE);
     Inventory savedInventory = this.inventoryDAO.create(inventory);
-
-    Query query = new Query();
-    query.addCriteria(Criteria.where("name").is("Amber"));
-    Assert.assertTrue(mongoTemplate.exists(query, Inventory.class, "inventory"));
-    query.addCriteria(Criteria.where("productType").is("hops"));
-    Assert.assertTrue(mongoTemplate.exists(query, Inventory.class, "inventory"));
-
-    Assert.assertTrue(savedInventory == inventory);
+    Assert.assertEquals(inventory.getName(), savedInventory.getName());
   }    
 }

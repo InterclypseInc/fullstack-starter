@@ -52,13 +52,10 @@ public class InventoryDAO {
    */
   public Inventory create(Inventory inventory) {
     // TODO
-    if (inventory.getName() != null) {
-      inventory.setId(null);
-      Inventory savedInventory = this.mongoTemplate.save(inventory);
-      return savedInventory;
-    } else {
-      return null;
-    }
+    Assert.notNull(inventory);
+    inventory.setId(null);
+    Inventory savedInventory = this.mongoTemplate.save(inventory);
+    return savedInventory;
   }
 
   /**

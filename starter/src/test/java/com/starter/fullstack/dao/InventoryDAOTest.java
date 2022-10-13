@@ -11,6 +11,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 /**
@@ -54,10 +55,14 @@ public class InventoryDAOTest {
    */  
   @Test
   public void create() {
+    Query query = new Query();
+    long before = mongoTemplate.count(query, Inventory.class, "inventory");
     Inventory inventory = new Inventory();
     inventory.setName(NAME);
     inventory.setProductType(PRODUCT_TYPE);
     Inventory savedInventory = this.inventoryDAO.create(inventory);
     Assert.assertEquals(inventory.getName(), savedInventory.getName());
+    Assert.assertEquals(inventory.getProductType(), savedInventory.getProductType());
+    Assert.assertEquals(mongoTemplate.count(query, Inventory.class, "inventory"), before + 1);
   }    
 }

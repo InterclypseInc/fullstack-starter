@@ -16,6 +16,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -66,12 +67,13 @@ public class InventoryControllerTest {
     this.inventory = new Inventory();
     this.inventory.setId("OTHER ID");
     this.inventory.setName("ALSO TEST");
+    this.inventory.setProductType("Product Type");
     this.mockMvc.perform(post("/inventory")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
-        .content(this.objectMapper.writeValueAsString(this.inventory)));
+        .content(this.objectMapper.writeValueAsString(this.inventory)))
+      .andExpect(status().isOk());
 
-    Assert.assertEquals(1, this.mongoTemplate.findAll(Inventory.class).size());
+    Assert.assertEquals(2, this.mongoTemplate.findAll(Inventory.class).size());
   }
 }
-

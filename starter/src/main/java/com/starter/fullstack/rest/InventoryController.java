@@ -37,8 +37,8 @@ public class InventoryController {
   }
   /**
    * Creates Inventory
-   * @return created inventory
    * @param inventory inventory
+   * @return created inventory
    */
   @PostMapping("/inventory")
   public Inventory create(@Valid @RequestBody Inventory inventory) {

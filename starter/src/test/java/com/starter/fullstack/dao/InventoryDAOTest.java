@@ -13,7 +13,6 @@ import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
-
 /**
  * Test Inventory DAO.
  */
@@ -49,4 +48,24 @@ public class InventoryDAOTest {
     List<Inventory> actualInventory = this.inventoryDAO.findAll();
     Assert.assertFalse(actualInventory.isEmpty());
   }
+
+  /**
+   * Test create method.
+   */  
+  @Test
+  public void create() {
+    List<Inventory> inventoryList = this.mongoTemplate.findAll(Inventory.class);
+    int before = inventoryList.size();
+    
+    Inventory inventory = new Inventory();
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    Inventory savedInventory = this.inventoryDAO.create(inventory);
+    
+    inventoryList = this.mongoTemplate.findAll(Inventory.class);
+    
+    Assert.assertEquals(inventory.getName(), savedInventory.getName());
+    Assert.assertEquals(inventory.getProductType(), savedInventory.getProductType());
+    Assert.assertEquals(inventoryList.size(), before + 1);
+  }    
 }

@@ -14,17 +14,14 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @SpringBootTest
 @AutoConfigureMockMvc
 @RunWith(SpringRunner.class)
 public class InventoryControllerTest {
-
+    
   @Autowired
   private MockMvc mockMvc;
 
@@ -36,6 +33,9 @@ public class InventoryControllerTest {
 
   private Inventory inventory;
 
+  private static final String NAME = "Amber";
+  private static final String PRODUCT_TYPE = "hops";
+    
   @Before
   public void setup() throws Throwable {
     this.inventory = new Inventory();
@@ -50,13 +50,18 @@ public class InventoryControllerTest {
     this.mongoTemplate.dropCollection(Inventory.class);
   }
 
+  /**
+   * Test create endpoint
+   * @throws Throwable see MockMvc
+   */  
   @Test
   public void create() throws Throwable {
     int before = this.mongoTemplate.findAll(Inventory.class).size();
       
     this.inventory = new Inventory();
     this.inventory.setId("OTHER ID");
-    this.inventory.setName("ALSO TEST");
+    this.inventory.setName(NAME);
+    this.inventory.setProductType(PRODUCT_TYPE);
     this.mockMvc.perform(post("/inventory")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)

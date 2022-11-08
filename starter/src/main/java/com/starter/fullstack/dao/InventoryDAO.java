@@ -91,7 +91,6 @@ public class InventoryDAO {
     Assert.notNull(id);
     Query query = new Query(Criteria.where("id").is(id));
     Inventory deletedInventory = this.mongoTemplate.findAndRemove(query, Inventory.class, "inventory");
-    Assert.notNull(deletedInventory);
     return Optional.of(deletedInventory);
   }
 }

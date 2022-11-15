@@ -14,10 +14,9 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-//import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -34,9 +33,6 @@ public class InventoryControllerTest {
   private ObjectMapper objectMapper;
 
   private Inventory inventory;
-
-  private static final String NAME = "Amber";
-  private static final String PRODUCT_TYPE = "hops";
     
   @Before
   public void setup() throws Throwable {
@@ -57,20 +53,21 @@ public class InventoryControllerTest {
    * @throws Throwable see MockMvc
    */  
   @Test
-  public void create() throws Throwable {
-    int before = this.mongoTemplate.findAll(Inventory.class).size();
-      
-    this.inventory = new Inventory();
-    this.inventory.setId("OTHER ID");
-    this.inventory.setName(NAME);
-    this.inventory.setProductType(PRODUCT_TYPE);
+  public void createTest() throws Throwable {
+    int sizeBefore = this.mongoTemplate.findAll(Inventory.class).size();
+
+    Inventory newInventory = new Inventory();
+    newInventory.setId("NEW ID");
+    newInventory.setName("CREATE TEST");
+    newInventory.setProductType("test");
+    
     this.mockMvc.perform(post("/inventory")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
-        .content(this.objectMapper.writeValueAsString(this.inventory)))
+        .content(this.objectMapper.writeValueAsString(newInventory)))
       .andExpect(status().isOk());
 
-    Assert.assertEquals(before + 1, this.mongoTemplate.findAll(Inventory.class).size());
+    Assert.assertEquals(sizeBefore + 1, this.mongoTemplate.findAll(Inventory.class).size());
   }
 
   /**
@@ -78,21 +75,15 @@ public class InventoryControllerTest {
    * @throws Throwable see MockMvc
    */  
   @Test
-  public void delete() throws Throwable {
-    Inventory inventory = new Inventory();
-    //this.inventory.setId("OTHER ID");
-    this.inventory.setName(NAME);
-    this.inventory.setProductType(PRODUCT_TYPE);
-    this.mongoTemplate.save(inventory);
-    
-    int before = this.mongoTemplate.findAll(Inventory.class).size();
+  public void deleteTest() throws Throwable {
+    int sizeBefore = this.mongoTemplate.findAll(Inventory.class).size();
 
-    this.mockMvc.perform(MockMvcRequestBuilders.delete("/inventory")
+    this.mockMvc.perform(delete("/inventory")
         .accept(MediaType.APPLICATION_JSON)
         .contentType(MediaType.APPLICATION_JSON)
         .content(this.inventory.getId()))
       .andExpect(status().isOk());
 
-    Assert.assertEquals(before - 1, this.mongoTemplate.findAll(Inventory.class).size());
+    Assert.assertEquals(sizeBefore - 1, this.mongoTemplate.findAll(Inventory.class).size());
   }
 }

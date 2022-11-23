@@ -3,6 +3,7 @@ package com.starter.fullstack.dao;
 import com.starter.fullstack.api.Inventory;
 import com.starter.fullstack.config.EmbedMongoClientOverrideConfig;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Resource;
 import org.junit.After;
 import org.junit.Assert;
@@ -66,11 +67,13 @@ public class InventoryDAOTest {
     Assert.assertNotEquals(little, actual.getId());
     Assert.assertFalse(actualInventory.isEmpty());
   }
-
- @Test 
- public void deleteTest(){
-    Inventory inventory = new Inventory():
+  /**
+   * deleteTest checks if the delete method is working as intedned in InventoryDao file.
+   */
+  @Test
+ public void deleteTest() {
     Inventory inventory = new Inventory();
+    String TEST_ID = "TEST_ID";
     inventory.setId(TEST_ID);
     inventory.setName(NAME);
     inventory.setProductType(PRODUCT_TYPE);
@@ -80,4 +83,5 @@ public class InventoryDAOTest {
     Assert.assertTrue(deletedItem.isPresent());
     Assert.assertEquals(deletedItem.get().getName(), NAME);
     Assert.assertEquals(deletedItem.get().getProductType(), PRODUCT_TYPE);
+  }
 }

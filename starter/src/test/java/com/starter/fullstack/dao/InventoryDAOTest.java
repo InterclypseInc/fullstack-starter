@@ -53,6 +53,7 @@ public class InventoryDAOTest {
   /**
    * createDaoTest checks if the createDao method is working as intended in InventoryDao file.
    */
+  @Test
   public void createDaoTest() {
     Inventory inventory = new Inventory();
     String little = "Like";
@@ -65,4 +66,18 @@ public class InventoryDAOTest {
     Assert.assertNotEquals(little, actual.getId());
     Assert.assertFalse(actualInventory.isEmpty());
   }
+
+ @Test 
+ public void deleteTest(){
+    Inventory inventory = new Inventory():
+    Inventory inventory = new Inventory();
+    inventory.setId(TEST_ID);
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    this.mongoTemplate.save(inventory);
+    Optional<Inventory> deletedItem = this.inventoryDAO.delete(TEST_ID);
+
+    Assert.assertTrue(deletedItem.isPresent());
+    Assert.assertEquals(deletedItem.get().getName(), NAME);
+    Assert.assertEquals(deletedItem.get().getProductType(), PRODUCT_TYPE);
 }

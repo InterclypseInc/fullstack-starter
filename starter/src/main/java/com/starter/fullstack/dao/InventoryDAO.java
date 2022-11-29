@@ -1,14 +1,19 @@
 package com.starter.fullstack.dao;
 
-import com.starter.fullstack.api.Inventory;
 import java.util.List;
 import java.util.Optional;
+
 import javax.annotation.PostConstruct;
+
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.data.mongodb.core.index.IndexOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.util.Assert;
+
+import com.starter.fullstack.api.Inventory;
 
 /**
  * Inventory DAO
@@ -29,6 +34,7 @@ public class InventoryDAO {
 
   /**
    * Constructor to build indexes for rate blackout object
+   * Last modification by Michel T. on 11/28/22
    */
   @PostConstruct
   public void setupIndexes() {
@@ -49,10 +55,13 @@ public class InventoryDAO {
    * Save Inventory.
    * @param inventory Inventory to Save/Update.
    * @return Created/Updated Inventory.
+   * 
    */
   public Inventory create(Inventory inventory) {
-    // TODO
-    return null;
+    //Modified by Michel T. on 08/25/22
+    inventory.setId(null); 
+    return mongoTemplate.insert(inventory);
+    
   }
 
   /**
@@ -79,10 +88,10 @@ public class InventoryDAO {
   /**
    * Delete Inventory By Id.
    * @param id Id of Inventory.
-   * @return Deleted Inventory.
    */
-  public Optional<Inventory> delete(String id) {
-    // TODO
-    return Optional.empty();
+  public void delete(String id) {
+	Inventory inventory = new Inventory();
+	inventory.setId(id);
+    mongoTemplate.remove(new Query(Criteria.where("id").is(id)), Inventory.class);
   }
 }

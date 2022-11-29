@@ -5,11 +5,14 @@ import java.util.Optional;
 import javax.annotation.Resource;
 import org.junit.Assert;
 import org.junit.Before;
+import org.junit.ClassRule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.repository.config.EnableMongoRepositories;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.testcontainers.containers.MongoDBContainer;
+import org.testcontainers.utility.DockerImageName;
 
 /**
  * Test Product DAO.
@@ -18,6 +21,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 @DataMongoTest
 @RunWith(SpringRunner.class)
 public class ProductDAOTest {
+  @ClassRule
+  public static final MongoDBContainer mongoDBContainer = new MongoDBContainer(DockerImageName.parse("mongo:4.0.10"));
   @Resource
   private ProductDAO productDAO;
   private static final String PRODUCT_NAME = "name";

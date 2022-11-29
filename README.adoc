@@ -1,35 +1,80 @@
 = Welcome To The Full-Stack Starter Project
 
-This project will assist you in building the critical skills necessary to complete tasks concerning both the
-Front-End and Back-End of a web application.
+This project will assist you in building the critical skills necessary to complete tasks concerning both the Front-End (React) and Back-End (Java) of a web application.
 
-. Please follow the instructions on the https://gogs.caifos.us/Sofiac/incubator-documentation/src/branch/master/fullstack[Incubator Full Stack Docs]
-to get your environment setup.
 . Fork this repository. In the top right of this page you'll see a fork option. Click that and accept all the default options.
-. Now you should be in your users forked repo. To verify this you should see your.username/fullstack-starter in the top left/url.
-. Clone your forked repository to your environment via ssh `git@gogs.caifos.us:$USER/fullstack-starter.git`
+. Now you should be in your users forked repo. To verify this you should see `your.username/fullstack-starter` in the top left/url.
+. Clone your forked repository to your environment via git+ssh:
+
+    git clone git@github.com:<your_username_here>/fullstack-starter.git
+
+== Setup
+=== Required software
+As this project is a "fullstack" application, you'll need software to run both the backend (server side) and frontend (client side) frameworks.
+
+==== sdkman
+One of the easiest tools to use to install java tooling is to use sdkman. It can be installed on your machine by executing the following from a command line:
+
+    curl -s "https://get.sdkman.io" | bash
+
+You will then either need to run the `source` command provided at the end of the installer (one time only) or close and open a new terminal window.
+
+==== Java
+Once you have sdkman installed you can use it to install Java. One of the advantages of installing this way is that because sdk relies on symlinks, you can have multiple versions of Java installed at the same time and easily switch which one is the active version.
+
+Running `sdk list java` will have sdkman list out the available versions. This application supports up to java 11 so you can select a distribution that is based on Java 11.
+
+For example:
+
+    sdk install java 11.0.12-open
+
+will install version 11.0.12 provided by java.net. Alternatively you could select
+
+    sdk install java 11.0.16.1-ms
+
+to install 11.0.16.1 from Microsoft.
+
+==== Gradle
+In addition to Java, sdkman also offers easy installs of other Java tooling, namely `gradle` and `maven`. In this case we are going to install `gradle`.
+
+Running `sdk list gradle` will show us all the available versions of gradle and we can choose on tht works for our project. In our case we can go with whatever is the latest version, `7.5.1` at the time of writing. Following the same vein as java it can be installed as follows:
+
+    sdk install gradle 7.5.1
+
+==== nodejs
+Node.js is a javascript runtime that can be used to run both server side javascript and build bundles for executing in a browser. In our case we are going to be taking advantage of this bundling feature to build all of our browser code.
+Fortunately, nodejs is available as system managed package, ie: dnf, yum, apt, pacman.
+
+On fedora and other redhat based distros: `sudo dnf install nodejs`
+
+On ubuntu or other debian based distros: `sudo apt install nodejs`
+
+=== Sample Data
+We have provided some sample data for you to use. Running the following command will clear out any existing data in the database and re-import the sample data.
+
+    ./sample-data/import.sh
 
 == Back-End
+The backend java code can be found in the `starter` folder.
 
-. Before anything else, we need to populate our local databases with the sample data.For your convenience, we
-have included a script that will automatically import the json data for you, so all you need to do is run
-it.From the fullstack-starter root directory, enter the following command: `./sample-data/import.sh`
+. In order to run the web application, we need to compile, or "build", the data objects and classes from the back-end. Enter the following command:
 
-. Next `cd` into the starter directory
+    ./gradlew build
 
-. In order to run the web application, we need to compile, or "build", the data objects and classes from the
-back-end.Enter the following command: `mvn clean install`
+. Next, we are ready to run the back-end of the application. Enter the following command:
 
-. Next, we are ready to run the back-end of the application.Enter the following command: `mvn spring-boot:run`
+    ./gradlew bootRun
 
 == Front-End
+The front end part of the project can be found in the `ui` folder.
 
-. In a new terminal window, navigate back to the fullstack-starter root directory
-. Next, `cd` into the ui directory
-. In order to run the front-end, we must first resolve any dependencies that the project relies on.Enter the
-following command: `yarn`
+. In order to run the front-end, we must first resolve any dependencies that the project relies on. Enter the following command:
 
-. After the dependencies have been resolved, we are ready to run the front-end of the application.In the
-same directory, enter the following command: `yarn start`
-. Lastly, to view the operating front-end, navigate to https://localhost:3000[localhost:3000] in your preferred
-browser.
+    npm install
+
+. After the dependencies have been resolved, we are ready to run the front-end of the application. In the same directory, enter the following command:
+
+    npm start
+
+. Lastly, to view the operating front-end, navigate to https://localhost:3000[localhost:3000] in your preferred browser.
+

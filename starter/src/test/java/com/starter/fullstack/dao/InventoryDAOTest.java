@@ -1,9 +1,13 @@
 package com.starter.fullstack.dao;
 
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
 import java.math.BigDecimal;
+
+import static org.junit.Assert.assertNotNull;
+
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -59,6 +63,7 @@ public class InventoryDAOTest {
 		Assert.assertFalse(actualInventory.isEmpty());
 	}
 
+
 	@Test
 	public void create() {
 		Inventory inventory = new Inventory();
@@ -90,4 +95,17 @@ public class InventoryDAOTest {
 		inventory.setAmount(new BigDecimal(300));
 		return inventory;
 	}
+	
+	@Test
+    public void create() {
+        Inventory inventory = new Inventory();
+        inventory.setName(NAME);
+		inventory.setProductType(PRODUCT_TYPE);
+        Inventory actual = inventoryDAO.create(inventory);
+        assertNotNull(actual);
+        assertNotNull(actual.getName());
+        assertNotNull(actual.getId());
+
+	}
 }
+

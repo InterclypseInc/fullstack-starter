@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -75,5 +76,26 @@ public class InventoryControllerTest {
       .andExpect(status().isOk());
 
     Assert.assertEquals(2, this.mongoTemplate.findAll(Inventory.class).size());
+  }
+
+  /**
+   * Test delete endpoint
+   * @throws Throwable see MockMvc
+   */
+  @Test
+  public void deleteTest() throws Throwable {
+    Inventory inventory = new Inventory();
+    inventory.setId("OTHER ID");
+    inventory.setName("ALSO TEST");
+    inventory.setProductType("Product Type");
+    this.mongoTemplate.save(inventory);
+    Assert.assertEquals(2, this.mongoTemplate.findAll(Inventory.class).size());
+    this.mockMvc.perform(delete("/inventory")
+        .accept(MediaType.TEXT_PLAIN)
+        .contentType(MediaType.TEXT_PLAIN)
+        .content(inventory.getId()))
+      .andExpect(status().isOk());
+
+    Assert.assertEquals(1, this.mongoTemplate.findAll(Inventory.class).size());
   }
 }

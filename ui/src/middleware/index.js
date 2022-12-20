@@ -3,10 +3,10 @@ import { isFSA } from 'flux-standard-action'
 /**
  * FSA compliant middlware which handles if the payload of an action is a function.
  */
-const thunkMiddleware = (extraArg) => {
-  return ({ dispatch, getState }) => {
-    return (next)=> {
-      return (action) => {
+const thunkMiddleware = (extraArg) =>
+  ({ dispatch, getState }) =>
+    (next)=>
+      (action) => {
         if (isFSA(action) && typeof action.payload === 'function') {
           return next(
             {
@@ -18,7 +18,4 @@ const thunkMiddleware = (extraArg) => {
           return next(action)
         }
       }
-    }
-  }
-}
 export { thunkMiddleware }

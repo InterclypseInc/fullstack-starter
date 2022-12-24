@@ -52,4 +52,24 @@ public class InventoryDAOTest {
     List<Inventory> actualInventory = this.inventoryDAO.findAll();
     Assert.assertFalse(actualInventory.isEmpty());
   }
+
+  // Test 'Create' DAO method
+  @Test
+  public void create() {
+
+    // create instance of Inventory
+    Inventory inventory = new Inventory();
+    // call create from InventoryDAO on instance of Inventory
+    Inventory createdInventory = this.inventoryDAO.create(inventory);
+    /* Assert that the output of create does not have a null id and 
+    was therefore created and inserted into the collection */
+    String id = createdInventory.getId();
+    Assert.assertNotNull(id);
+    
+
+
+    
+    
+    // assert create returns instance of inventory
+  }
 }

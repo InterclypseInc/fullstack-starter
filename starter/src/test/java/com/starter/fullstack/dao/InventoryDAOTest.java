@@ -39,6 +39,33 @@ public class InventoryDAOTest {
   public void tearDown() {
     this.mongoTemplate.dropCollection(Inventory.class);
   }
+  
+  /**
+   * Test Create method.
+   */
+  @Test 
+  public void createA() {
+    Inventory inventory = new Inventory();
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    this.mongoTemplate.save(inventory);
+    Inventory inventoryTestA = this.inventoryDAO.create(inventory);
+    Assert.assertNotEquals(inventory, inventoryTestA);
+  }
+  
+  /**
+   * Test Create method.
+   */
+  @Test 
+  public void createB() {
+    Inventory inventory = new Inventory();
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    inventory.setId("7");
+    this.mongoTemplate.save(inventory);
+    Inventory inventoryTestB = this.inventoryDAO.create(inventory);
+    Assert.assertNotEquals(inventory, inventoryTestB);
+  }
 
   /**
    * Test Find All method.

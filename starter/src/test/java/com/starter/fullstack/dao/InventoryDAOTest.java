@@ -52,4 +52,61 @@ public class InventoryDAOTest {
     List<Inventory> actualInventory = this.inventoryDAO.findAll();
     Assert.assertFalse(actualInventory.isEmpty());
   }
+
+  // see if you can insert just one object
+  @Test
+  public void create1() {
+    Inventory inventory = new Inventory();
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    this.inventoryDAO.create(inventory);
+    List<Inventory> actualInventory = this.mongoTemplate.findAll(Inventory.class);
+    Assert.assertFalse(actualInventory.isEmpty());
+  }
+
+  // make sure that it can insert more than one object
+  @Test
+  public void create2() {
+    Inventory inventory = new Inventory();
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    this.inventoryDAO.create(inventory);
+    Inventory inventory2 = new Inventory();
+    inventory2.setName("banana");
+    inventory.setProductType("fruit");
+    this.inventoryDAO.create(inventory2);
+    List<Inventory> actualInventory = this.mongoTemplate.findAll(Inventory.class);
+    Boolean check = actualInventory.size()==2;
+    Assert.assertTrue(check);
+  }
+
+  // check to make sure it sets the ID to null
+  @Test
+  public void create3() {
+    Inventory inventory = new Inventory();
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    inventory.setId("temp");
+    this.inventoryDAO.create(inventory);
+    Inventory actualInventory = this.mongoTemplate.findById("temp", Inventory.class);
+    Boolean check = actualInventory == null;
+    Assert.assertTrue(check);
+  }
+
+  // check to make sure it can insert an object with the same name and product type multiple[le times
+  @Test
+  public void create4() {
+    Inventory inventory = new Inventory();
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    this.inventoryDAO.create(inventory);
+    Inventory inventory2 = new Inventory();
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    this.inventoryDAO.create(inventory2);
+    List<Inventory> actualInventory = this.mongoTemplate.findAll(Inventory.class);
+    Boolean check = actualInventory.size()==2;
+    Assert.assertTrue(check);
+  }
+
 }

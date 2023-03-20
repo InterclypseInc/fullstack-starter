@@ -2,6 +2,7 @@ package com.starter.fullstack.dao;
 
 import com.starter.fullstack.api.Inventory;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Resource;
 import org.junit.After;
 import org.junit.Assert;
@@ -51,6 +52,62 @@ public class InventoryDAOTest {
     this.mongoTemplate.save(inventory);
     List<Inventory> actualInventory = this.inventoryDAO.findAll();
     Assert.assertFalse(actualInventory.isEmpty());
+  }
+
+  // check to see if it deletes the  object if given a valid ID
+  @Test
+  public void delete1() {
+    Inventory inventory = new Inventory();
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    inventory.setId("TEST1");
+    this.mongoTemplate.save(inventory);
+    Optional<Inventory> actualInventory = this.inventoryDAO.delete("TEST1");
+    Assert.assertEquals(actualInventory, Optional.of(inventory));
+  }
+
+  // check to make sure it doesn't break if given an invalid ID
+  @Test
+  public void delete2() {
+    Inventory inventory = new Inventory();
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    inventory.setId("TEST1");
+    this.mongoTemplate.save(inventory);
+    Optional<Inventory> actualInventory = this.inventoryDAO.delete("INVALID ID");
+    Assert.assertEquals(null,actualInventory);
+  }
+
+  // checking to ensure it does not break if I try to delete the same thing twice
+  @Test
+  public void delete3() {
+    Inventory inventory = new Inventory();
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    inventory.setId("TEST1");
+    this.mongoTemplate.save(inventory);
+    Optional<Inventory> actualInventory = this.inventoryDAO.delete("TEST1");
+    Assert.assertEquals(actualInventory, Optional.of(inventory));
+    Optional<Inventory> actualInventory2 = this.inventoryDAO.delete("TEST1");
+    Assert.assertEquals(null,actualInventory2);
+  }
+
+  // check to see if it deletes the right object if given a valid ID after 2 objects with same name/type were added
+  @Test
+  public void delete4() {
+    Inventory inventory = new Inventory();
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    inventory.setId("TEST1");
+    this.mongoTemplate.save(inventory);
+
+    Inventory inventory2 = new Inventory();
+    inventory2.setName(NAME);
+    inventory2.setProductType(PRODUCT_TYPE);
+    inventory2.setId("TEST2");
+    this.mongoTemplate.save(inventory2);
+    Optional<Inventory> actualInventory = this.inventoryDAO.delete("TEST1");
+    Assert.assertEquals(actualInventory, Optional.of(inventory));
   }
 
   // see if you can insert just one object

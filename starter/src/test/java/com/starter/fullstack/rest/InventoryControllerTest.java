@@ -12,9 +12,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.aggregation.ArrayOperators;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.MvcResult;
+
+import java.util.Optional;
+
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -36,7 +41,7 @@ public class InventoryControllerTest {
     private ObjectMapper objectMapper;
 
     private Inventory inventory;
-    private Inventory inventory2;
+    private Inventory i2;
 
     @Before
     public void setup() throws Throwable {
@@ -67,46 +72,41 @@ public class InventoryControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.objectMapper.writeValueAsString(this.inventory)))
                 .andExpect(status().isOk());
-
-        Assert.assertEquals(2, this.mongoTemplate.findAll(Inventory.class).size());
-    }
-
-    // check to make sure that it sets the ID to null
-    @Test
-    public void create2() throws Throwable {
-        this.inventory = new Inventory();
-        this.inventory.setId("OTHER ID");
-        this.inventory.setName("ALSO TEST");
-        this.mockMvc.perform(post("/inventory")
+        this.mockMvc.perform(post("/inventory")    // because ID doesn't matter, should be able to add same object twice
                         .accept(MediaType.APPLICATION_JSON)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(this.objectMapper.writeValueAsString(this.inventory)))
-                .andExpect(status().isOk());
-
-        Assert.assertEquals(null, this.mongoTemplate.findById("OTHER ID", Inventory.class));
-    }
-
-
-    // check to make sure you can insert multiple times
-    @Test
-    public void create3() throws Throwable {
-        this.inventory = new Inventory();
-        this.inventory.setId("OTHER ID");
-        this.inventory.setName("ALSO TEST");
-        this.mockMvc.perform(post("/inventory")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(this.objectMapper.writeValueAsString(this.inventory)))
-                .andExpect(status().isOk());
-        this.inventory2 = new Inventory();
-        this.inventory2.setId("OTHER OTHER ID");
-        this.inventory2.setName("ALSO TEST");
-        this.mockMvc.perform(post("/inventory")
-                        .accept(MediaType.APPLICATION_JSON)
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(this.objectMapper.writeValueAsString(this.inventory2)))
                 .andExpect(status().isOk());
 
         Assert.assertEquals(3, this.mongoTemplate.findAll(Inventory.class).size());
+        Assert.assertEquals(null, this.mongoTemplate.findById("OTHER ID", Inventory.class));  // make sure sets ID to null
+    }
+
+    // check to ensure that the item gets deleted
+    @Test
+    public void delete1() throws Throwable {
+        this.i2 = new Inventory();
+        i2.setId("OTHER_ID");
+        i2.setName("OTHER_NAME");
+        this.mongoTemplate.save(i2);
+
+        this.mockMvc.perform(delete("/inventory")  // remove inventory
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(this.inventory.getId()))
+                        .andExpect(status().isOk());
+        Assert.assertEquals(1, this.mongoTemplate.findAll(Inventory.class).size()); // make sure i2 is still in there
+        Assert.assertEquals(i2,this.mongoTemplate.findById(this.i2.getId(),Inventory.class));
+
+        Assert.assertNull(this.mongoTemplate.findById(this.inventory.getId(),Inventory.class)); // make sure inventory got taken out
+
+        MvcResult result = this.mockMvc.perform(delete("/inventory")  // try to remove inventory again (testing invalid id)
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(this.inventory.getId()))
+                        .andExpect(status().isOk())
+                        .andReturn();
+        Assert.assertNull(result.getResponse().getContentType());
     }
 }
+

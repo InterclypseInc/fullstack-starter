@@ -54,47 +54,10 @@ public class InventoryDAOTest {
     Assert.assertFalse(actualInventory.isEmpty());
   }
 
-  // check to see if it deletes the  object if given a valid ID
+  // check to see if it deletes the  object if given a valid ID, and ensures that it returns null if deleting the same thing twice
+  // also check to see if it deletes the right object if given a valid ID after 2 objects with same name/type were added
   @Test
   public void delete1() {
-    Inventory inventory = new Inventory();
-    inventory.setName(NAME);
-    inventory.setProductType(PRODUCT_TYPE);
-    inventory.setId("TEST1");
-    this.mongoTemplate.save(inventory);
-    Optional<Inventory> actualInventory = this.inventoryDAO.delete("TEST1");
-    Assert.assertEquals(actualInventory, Optional.of(inventory));
-  }
-
-  // check to make sure it doesn't break if given an invalid ID
-  @Test
-  public void delete2() {
-    Inventory inventory = new Inventory();
-    inventory.setName(NAME);
-    inventory.setProductType(PRODUCT_TYPE);
-    inventory.setId("TEST1");
-    this.mongoTemplate.save(inventory);
-    Optional<Inventory> actualInventory = this.inventoryDAO.delete("INVALID ID");
-    Assert.assertEquals(null,actualInventory);
-  }
-
-  // checking to ensure it does not break if I try to delete the same thing twice
-  @Test
-  public void delete3() {
-    Inventory inventory = new Inventory();
-    inventory.setName(NAME);
-    inventory.setProductType(PRODUCT_TYPE);
-    inventory.setId("TEST1");
-    this.mongoTemplate.save(inventory);
-    Optional<Inventory> actualInventory = this.inventoryDAO.delete("TEST1");
-    Assert.assertEquals(actualInventory, Optional.of(inventory));
-    Optional<Inventory> actualInventory2 = this.inventoryDAO.delete("TEST1");
-    Assert.assertEquals(null,actualInventory2);
-  }
-
-  // check to see if it deletes the right object if given a valid ID after 2 objects with same name/type were added
-  @Test
-  public void delete4() {
     Inventory inventory = new Inventory();
     inventory.setName(NAME);
     inventory.setProductType(PRODUCT_TYPE);
@@ -106,64 +69,33 @@ public class InventoryDAOTest {
     inventory2.setProductType(PRODUCT_TYPE);
     inventory2.setId("TEST2");
     this.mongoTemplate.save(inventory2);
+
     Optional<Inventory> actualInventory = this.inventoryDAO.delete("TEST1");
     Assert.assertEquals(actualInventory, Optional.of(inventory));
+    Optional<Inventory> actualInventory2 = this.inventoryDAO.delete("TEST1"); //this implicitly checks to make sure it can handle an invalid ID as well (handles the "if i == null")
+    Assert.assertEquals(null,actualInventory2);
   }
 
-  // see if you can insert just one object
+  // if id is null, check to make sure it returns null
+  @Test
+  public void delete2(){
+    Optional<Inventory> actualInventory2 = this.inventoryDAO.delete(null);
+    Assert.assertEquals(null,actualInventory2);
+  }
+
+  // Per PR comments, reduced create tests to only one test, which now ensures that the object is added the correct amount of times
+  // (one in this instance), and that the ID is set to null
   @Test
   public void create1() {
     Inventory inventory = new Inventory();
     inventory.setName(NAME);
     inventory.setProductType(PRODUCT_TYPE);
-    this.inventoryDAO.create(inventory);
-    List<Inventory> actualInventory = this.mongoTemplate.findAll(Inventory.class);
-    Assert.assertFalse(actualInventory.isEmpty());
-  }
-
-  // make sure that it can insert more than one object
-  @Test
-  public void create2() {
-    Inventory inventory = new Inventory();
-    inventory.setName(NAME);
-    inventory.setProductType(PRODUCT_TYPE);
-    this.inventoryDAO.create(inventory);
-    Inventory inventory2 = new Inventory();
-    inventory2.setName("banana");
-    inventory.setProductType("fruit");
-    this.inventoryDAO.create(inventory2);
-    List<Inventory> actualInventory = this.mongoTemplate.findAll(Inventory.class);
-    Boolean check = actualInventory.size()==2;
-    Assert.assertTrue(check);
-  }
-
-  // check to make sure it sets the ID to null
-  @Test
-  public void create3() {
-    Inventory inventory = new Inventory();
-    inventory.setName(NAME);
-    inventory.setProductType(PRODUCT_TYPE);
     inventory.setId("temp");
     this.inventoryDAO.create(inventory);
-    Inventory actualInventory = this.mongoTemplate.findById("temp", Inventory.class);
-    Boolean check = actualInventory == null;
-    Assert.assertTrue(check);
-  }
-
-  // check to make sure it can insert an object with the same name and product type multiple[le times
-  @Test
-  public void create4() {
-    Inventory inventory = new Inventory();
-    inventory.setName(NAME);
-    inventory.setProductType(PRODUCT_TYPE);
-    this.inventoryDAO.create(inventory);
-    Inventory inventory2 = new Inventory();
-    inventory.setName(NAME);
-    inventory.setProductType(PRODUCT_TYPE);
-    this.inventoryDAO.create(inventory2);
+    this.inventoryDAO.create(inventory); // it should be able to add the same object more than once as well since the ID doesn't matter
     List<Inventory> actualInventory = this.mongoTemplate.findAll(Inventory.class);
-    Boolean check = actualInventory.size()==2;
-    Assert.assertTrue(check);
+    Assert.assertEquals(2, actualInventory.size());
+    Assert.assertEquals(null, this.mongoTemplate.findById("temp", Inventory.class));
   }
 
 }

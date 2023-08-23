@@ -66,9 +66,9 @@ public class InventoryDAOTest {
     inventory.setVersion(VERSION);
     inventory.setName(NAME);
     inventory.setProductType(PRODUCT_TYPE);
-    Inventory actualInventory = this.inventoryDAO.create(inventory);
+    this.inventoryDAO.create(inventory);
 
     Query findByName = new Query(where("name").is(NAME));
-    Assert.assertEquals(actualInventory, this.mongoTemplate.findOne(findByName, Inventory.class));
+    Assert.assertEquals(inventory, this.mongoTemplate.findOne(findByName, Inventory.class));
   }
 }

@@ -11,9 +11,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.utility.DockerImageName;
+import static org.springframework.data.mongodb.core.query.Criteria.where;
+
 
 /**
  * Test Inventory DAO.
@@ -27,6 +30,7 @@ public class InventoryDAOTest {
   @Resource
   private MongoTemplate mongoTemplate;
   private InventoryDAO inventoryDAO;
+  private static final long VERSION = 1;
   private static final String NAME = "Amber";
   private static final String PRODUCT_TYPE = "hops";
 
@@ -51,5 +55,20 @@ public class InventoryDAOTest {
     this.mongoTemplate.save(inventory);
     List<Inventory> actualInventory = this.inventoryDAO.findAll();
     Assert.assertFalse(actualInventory.isEmpty());
+  }
+
+  /**
+   * Test Create method.
+   */
+  @Test
+  public void create() {
+    Inventory inventory = new Inventory();
+    inventory.setVersion(VERSION);
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    Inventory actualInventory = this.inventoryDAO.create(inventory);
+
+    Query findByName = new Query(where("name").is(NAME));
+    Assert.assertEquals(actualInventory, this.mongoTemplate.findOne(findByName, Inventory.class));
   }
 }

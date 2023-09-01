@@ -11,11 +11,9 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.autoconfigure.data.mongo.DataMongoTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
-import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.utility.DockerImageName;
-import static org.springframework.data.mongodb.core.query.Criteria.where;
 
 
 /**
@@ -30,7 +28,7 @@ public class InventoryDAOTest {
   @Resource
   private MongoTemplate mongoTemplate;
   private InventoryDAO inventoryDAO;
-  private static final long VERSION = 1;
+  private static final String ID = "101";
   private static final String NAME = "Amber";
   private static final String PRODUCT_TYPE = "hops";
 
@@ -63,12 +61,19 @@ public class InventoryDAOTest {
   @Test
   public void create() {
     Inventory inventory = new Inventory();
-    inventory.setVersion(VERSION);
     inventory.setName(NAME);
     inventory.setProductType(PRODUCT_TYPE);
-    this.inventoryDAO.create(inventory);
+    inventory.setId(ID);
+    Inventory outInv = this.inventoryDAO.create(inventory);
 
-    Query findByName = new Query(where("name").is(NAME));
-    Assert.assertEquals(inventory, this.mongoTemplate.findOne(findByName, Inventory.class));
+    Assert.assertNotEquals(outInv.getId(), ID);
+
+    Inventory inventory2 = new Inventory();
+    inventory2.setName(NAME);
+    inventory2.setProductType(PRODUCT_TYPE);
+    inventory2.setId(ID);
+    this.inventoryDAO.create(inventory2);
+
+    Assert.assertEquals(this.mongoTemplate.estimatedCount(Inventory.class), 2);
   }
 }

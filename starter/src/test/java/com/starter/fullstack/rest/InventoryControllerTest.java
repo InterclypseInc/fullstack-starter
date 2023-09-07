@@ -2,7 +2,7 @@ package com.starter.fullstack.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starter.fullstack.api.Inventory;
-
+import java.util.List;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -63,6 +63,9 @@ public class InventoryControllerTest {
         .content(this.objectMapper.writeValueAsString(this.inventory)))
       .andExpect(status().isOk());
 
+    List<Inventory> inv_list = this.mongoTemplate.findAll(Inventory.class);
+    
+    Assert.assertNotEquals("OTHER ID", inv_list.get(1).getId());
     Assert.assertEquals(2, this.mongoTemplate.findAll(Inventory.class).size());
   }
 }

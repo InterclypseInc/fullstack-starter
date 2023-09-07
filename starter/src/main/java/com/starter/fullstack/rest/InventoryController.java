@@ -34,6 +34,7 @@ public class InventoryController {
    */
   @PostMapping
   public Inventory create(@RequestBody Inventory inventory) {
+    Assert.notNull(inventory, "Inventory must not be null.");
     return this.inventoryDAO.create(inventory);
   }
 

@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.testcontainers.containers.MongoDBContainer;
 import org.testcontainers.utility.DockerImageName;
 
+
 /**
  * Test Inventory DAO.
  */
@@ -27,6 +28,7 @@ public class InventoryDAOTest {
   @Resource
   private MongoTemplate mongoTemplate;
   private InventoryDAO inventoryDAO;
+  private static final String ID = "101";
   private static final String NAME = "Amber";
   private static final String PRODUCT_TYPE = "hops";
 
@@ -51,5 +53,30 @@ public class InventoryDAOTest {
     this.mongoTemplate.save(inventory);
     List<Inventory> actualInventory = this.inventoryDAO.findAll();
     Assert.assertFalse(actualInventory.isEmpty());
+  }
+
+  /**
+   * Test Create method.
+   */
+  @Test
+  public void create() {
+    Inventory inventory = new Inventory();
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+    inventory.setId(ID);
+    Inventory outInv = this.inventoryDAO.create(inventory);
+
+    Assert.assertNotNull(outInv);
+    Assert.assertNotEquals(outInv.getId(), ID);
+
+    Inventory inventory2 = new Inventory();
+    inventory2.setName("John");
+    inventory2.setProductType(PRODUCT_TYPE);
+    inventory2.setId(ID);
+    Inventory outInv2 = this.inventoryDAO.create(inventory2);
+
+    Assert.assertNotEquals(outInv.getId(), ID);
+    Assert.assertNotEquals(outInv.getName(), outInv2.getName());
+    Assert.assertEquals(this.mongoTemplate.estimatedCount(Inventory.class), 2);
   }
 }

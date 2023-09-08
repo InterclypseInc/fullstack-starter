@@ -14,6 +14,7 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,7 +37,7 @@ public class InventoryControllerTest {
   @Before
   public void setup() throws Throwable {
     this.inventory = new Inventory();
-    this.inventory.setId("ID");
+    this.inventory.setId("ID1");
     this.inventory.setName("TEST");
     // Sets the Mongo ID for us
     this.inventory = this.mongoTemplate.save(this.inventory);
@@ -64,6 +65,21 @@ public class InventoryControllerTest {
       .andExpect(status().isOk());
   
     Assert.assertEquals(2, this.mongoTemplate.findAll(Inventory.class).size());
+  }
+
+ /**
+   * Test remove endpoint.
+   * @throws Throwable see MockMvc
+   */
+  @Test
+  public void remove() throws Throwable {
+    this.mockMvc.perform(delete("/inventory")
+        .accept(MediaType.APPLICATION_JSON)
+        .contentType(MediaType.APPLICATION_JSON)
+        .content(this.inventory.getId()))
+      .andExpect(status().isOk());
+        
+    Assert.assertEquals(0, this.mongoTemplate.findAll(Inventory.class).size());
   }
 }
 

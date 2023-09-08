@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.index.IndexOperations;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.util.Assert;
+import org.springframework.util.StringUtils;
 
 /**
  * Inventory DAO
@@ -84,14 +85,12 @@ public class InventoryDAO {
    * @return Deleted Inventory.
    */
   public Optional<Inventory> delete(String id) {
-    if (id != null & !id.equals("")) {
-      Query query = new Query();
-      query.addCriteria(Criteria.where("id").is(id));
-      Inventory inventory = this.mongoTemplate.findAndRemove(query, Inventory.class);
+    assert StringUtils.hasText(id);
+    Query query = new Query();
+    query.addCriteria(Criteria.where("id").is(id));
+    Inventory inventory = this.mongoTemplate.findAndRemove(query, Inventory.class);
 
-      Optional<Inventory> deletedInv = Optional.ofNullable(inventory);
-      return deletedInv;
-    }
-    return null;
+    Optional<Inventory> deletedInv = Optional.ofNullable(inventory);
+    return deletedInv;
   }
 }

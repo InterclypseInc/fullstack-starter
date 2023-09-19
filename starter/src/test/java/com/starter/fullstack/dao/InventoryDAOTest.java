@@ -68,6 +68,9 @@ public class InventoryDAOTest {
 
     Assert.assertNotNull(outInv);
     Assert.assertNotEquals(outInv.getId(), ID);
+    Assert.assertEquals(inventory.getName(), outInv.getName());
+    Assert.assertEquals(inventory.getProductType(), outInv.getProductType());
+
 
     Inventory inventory2 = new Inventory();
     inventory2.setName("John");

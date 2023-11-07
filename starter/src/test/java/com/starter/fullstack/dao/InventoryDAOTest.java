@@ -67,12 +67,12 @@ public class InventoryDAOTest {
     inventory.setName(NAME);
     inventory.setProductType(PRODUCT_TYPE);
     inventory.setId(ID);
-    this.inventoryDAO.create(inventory);
+    inventory = this.inventoryDAO.create(inventory);
 
     Assert.assertEquals(1, this.mongoTemplate.findAll(Inventory.class).size());
 
     Assert.assertNotEquals(null, this.mongoTemplate.findAll(Inventory.class).get(0).getId()); 
 
-     Assert.assertNotEquals(ID, this.mongoTemplate.findAll(Inventory.class).get(0).getId()); 
+     Assert.assertNotEquals(ID, inventory.getId()); 
   }
 }

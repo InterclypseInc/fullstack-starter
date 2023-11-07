@@ -45,15 +45,23 @@ public class InventoryDAO {
     return this.mongoTemplate.findAll(Inventory.class);
   }
 
-  /**
+    /**
    * Save Inventory.
    * @param inventory Inventory to Save/Update.
    * @return Created/Updated Inventory.
    */
   public Inventory create(Inventory inventory) {
-    // TODO
-    return null;
+    
+    // Set ID to null
+    inventory.setId(null);
+
+    // insert the passed in inventory into the MongoTemplate
+    this.mongoTemplate.insert(inventory);
+
+    // return the updated inventory
+    return inventory;
   }
+
 
   /**
    * Retrieve Inventory.

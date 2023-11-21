@@ -52,4 +52,25 @@ public class InventoryDAOTest {
     List<Inventory> actualInventory = this.inventoryDAO.findAll();
     Assert.assertFalse(actualInventory.isEmpty());
   }
+
+  /**
+   * Test Create method.
+   */
+  @Test
+  public void create() {
+    String INVENTORY_NAME = "Best Inventory Ever";
+
+    // Create and add inventory to db
+    Inventory newInventory = new Inventory();
+    newInventory.setName(INVENTORY_NAME);
+    newInventory.setProductType(PRODUCT_TYPE);
+    String origId = newInventory.getId();
+
+    // Check if successfully added to db
+    Inventory addedInventory = this.inventoryDAO.create(newInventory);
+    Assert.assertNotNull(addedInventory);
+
+    // Checks if mongo ID overrides original ID
+    Assert.assertNotEquals(addedInventory.getId(), origId);
+  }
 }

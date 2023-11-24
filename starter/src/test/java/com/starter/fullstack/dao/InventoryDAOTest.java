@@ -76,7 +76,7 @@ public class InventoryDAOTest {
   }
 
   /**
-   * Test Create method.
+   * Test Remove method.
    */
   @Test
   public void remove() {
@@ -93,5 +93,54 @@ public class InventoryDAOTest {
     Optional<Inventory> deletedInventory = this.inventoryDAO.delete(newInventory.getId());
     Assert.assertNotNull(deletedInventory);
     Assert.assertEquals(0, this.mongoTemplate.findAll(Inventory.class).size());
+  }
+
+  /**
+   * Test Retrieve method.
+   */
+  @Test
+  public void retrieve() {
+    String INVENTORY_NAME = "Inventory to Find";
+
+    // Create and add inventory to db
+    Inventory newInventory = new Inventory();
+    newInventory.setName(INVENTORY_NAME);
+    newInventory.setProductType(PRODUCT_TYPE);
+    newInventory = this.inventoryDAO.create(newInventory);
+    Assert.assertEquals(1, this.mongoTemplate.findAll(Inventory.class).size());
+
+    // Check if successfully retrieved
+    Optional<Inventory> retrievedInventory = this.inventoryDAO.retrieve(newInventory.getId());
+    Assert.assertNotNull(retrievedInventory);
+
+    // Check if it cannot find non-existent inventory
+    Assert.assertSame(Optional.empty(),(this.inventoryDAO.retrieve("Non-existing inventory")));
+  }
+
+  /**
+   * Test Update method.
+   */
+  @Test
+  public void update() {
+    String INVENTORY_NAME = "Original Inventory";
+    // Create and add inventory to db
+    Inventory original = new Inventory();
+    original.setName(INVENTORY_NAME);
+    original.setProductType(PRODUCT_TYPE);
+    original = this.inventoryDAO.create(original);
+    Assert.assertEquals(1, this.mongoTemplate.findAll(Inventory.class).size());
+
+    // Update the inventory
+    Inventory update = original;
+    update.setName("Updated Inventory");
+    Optional<Inventory> updatedInventory = this.inventoryDAO.update(original.getId(), update);
+
+    // Check if successfully updated
+    Assert.assertNotNull(updatedInventory);
+    if(updatedInventory.isPresent())
+    {
+     Inventory result = updatedInventory.get();
+     Assert.assertNotEquals(original, result);
+    }
   }
 }

@@ -8,6 +8,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.Index;
 import org.springframework.data.mongodb.core.index.IndexOperations;
+import org.springframework.data.mongodb.core.query.Criteria;
+import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.util.Assert;
 
 /**
@@ -61,8 +63,8 @@ public class InventoryDAO {
    * @return Found Inventory.
    */
   public Optional<Inventory> retrieve(String id) {
-    // TODO
-    return Optional.empty();
+    Inventory inventory = this.mongoTemplate.findOne(Query.query(Criteria.where("_id").is(id)), Inventory.class);
+    return Optional.ofNullable(inventory);
   }
 
   /**
@@ -72,8 +74,9 @@ public class InventoryDAO {
    * @return Updated Inventory.
    */
   public Optional<Inventory> update(String id, Inventory inventory) {
-    // TODO
-    return Optional.empty();
+    Query query = new Query().addCriteria(Criteria.where("_id").is(id));
+    Inventory updatedInventory = this.mongoTemplate.findAndReplace(query, inventory, "inventory");
+    return Optional.ofNullable(updatedInventory);
   }
 
   /**
@@ -82,7 +85,8 @@ public class InventoryDAO {
    * @return Deleted Inventory.
    */
   public Optional<Inventory> delete(String id) {
-    // TODO
-    return Optional.empty();
+    Query query = new Query().addCriteria(Criteria.where("_id").is(id));
+    Inventory removedInventory = this.mongoTemplate.findAndRemove(query, Inventory.class,"inventory");
+    return Optional.ofNullable(removedInventory);
   }
 }

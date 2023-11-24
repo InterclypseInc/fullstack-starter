@@ -2,6 +2,7 @@ package com.starter.fullstack.dao;
 
 import com.starter.fullstack.api.Inventory;
 import java.util.List;
+import java.util.Optional;
 import javax.annotation.Resource;
 import org.junit.After;
 import org.junit.Assert;
@@ -72,5 +73,25 @@ public class InventoryDAOTest {
 
     // Checks if mongo ID overrides original ID
     Assert.assertNotEquals(addedInventory.getId(), origId);
+  }
+
+  /**
+   * Test Create method.
+   */
+  @Test
+  public void remove() {
+    String INVENTORY_NAME = "Worst Inventory Ever";
+
+    // Create and add inventory to db
+    Inventory newInventory = new Inventory();
+    newInventory.setName(INVENTORY_NAME);
+    newInventory.setProductType(PRODUCT_TYPE);
+    newInventory = this.inventoryDAO.create(newInventory);
+    Assert.assertEquals(1, this.mongoTemplate.findAll(Inventory.class).size());
+
+    // Check if successfully removed from db
+    Optional<Inventory> deletedInventory = this.inventoryDAO.delete(newInventory.getId());
+    Assert.assertNotNull(deletedInventory);
+    Assert.assertEquals(0, this.mongoTemplate.findAll(Inventory.class).size());
   }
 }

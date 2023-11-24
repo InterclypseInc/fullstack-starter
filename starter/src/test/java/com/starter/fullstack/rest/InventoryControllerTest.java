@@ -2,6 +2,7 @@ package com.starter.fullstack.rest;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.starter.fullstack.api.Inventory;
+import com.starter.fullstack.api.Product;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
@@ -79,5 +80,18 @@ public class InventoryControllerTest {
 
         Assert.assertEquals(2, this.mongoTemplate.findAll(Inventory.class).size());
     }
-}
 
+    /**
+     * Test remove endpoint.
+     * @throws Throwable see MockMvc
+     */
+    @Test
+    public void remove() throws Throwable {
+        this.mockMvc.perform(delete("/inventory/{id}", this.inventory.getId())
+                        .accept(MediaType.APPLICATION_JSON)
+                        .contentType(MediaType.APPLICATION_JSON))
+                        //.content("[\"" + this.inventory.getId() + "\"]")) // from ProductControllerTest
+                        .andExpect(status().isOk());
+        Assert.assertEquals(0, this.mongoTemplate.findAll(Inventory.class).size());
+    }
+}

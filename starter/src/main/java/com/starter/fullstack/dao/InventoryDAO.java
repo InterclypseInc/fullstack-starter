@@ -53,8 +53,8 @@ public class InventoryDAO {
    * @return Created/Updated Inventory.
    */
   public Inventory create(Inventory inventory) {
-      inventory.setId(null);
-      return this.mongoTemplate.save(inventory, "inventory");
+    inventory.setId(null);
+    return this.mongoTemplate.save(inventory, "inventory");
   }
 
   /**
@@ -86,7 +86,7 @@ public class InventoryDAO {
    */
   public Optional<Inventory> delete(String id) {
     Query query = new Query().addCriteria(Criteria.where("_id").is(id));
-    Inventory removedInventory = this.mongoTemplate.findAndRemove(query, Inventory.class,"inventory");
+    Inventory removedInventory = this.mongoTemplate.findAndRemove(query, Inventory.class, "inventory");
     return Optional.ofNullable(removedInventory);
   }
 }

@@ -114,8 +114,9 @@ public class InventoryDAOTest {
     Assert.assertNotNull(retrievedInventory);
 
     // Check if it cannot find non-existent inventory
-    Assert.assertSame(Optional.empty(),(this.inventoryDAO.retrieve("Non-existing inventory")));
+    Assert.assertSame(Optional.empty(), (this.inventoryDAO.retrieve("Non-existing inventory")));
   }
+
 
   /**
    * Test Update method.
@@ -137,10 +138,9 @@ public class InventoryDAOTest {
 
     // Check if successfully updated
     Assert.assertNotNull(updatedInventory);
-    if(updatedInventory.isPresent())
-    {
-     Inventory result = updatedInventory.get();
-     Assert.assertNotEquals(original, result);
+    if (updatedInventory.isPresent()) {
+      Inventory result = updatedInventory.get();
+      Assert.assertNotEquals(original, result);
     }
   }
 }

@@ -20,6 +20,7 @@ public class InventoryDAO {
 
   /**
    * Default Constructor.
+   * 
    * @param mongoTemplate MongoTemplate.
    */
   public InventoryDAO(MongoTemplate mongoTemplate) {
@@ -39,6 +40,7 @@ public class InventoryDAO {
 
   /**
    * Find All Inventory.
+   * 
    * @return List of found Inventory.
    */
   public List<Inventory> findAll() {
@@ -47,16 +49,21 @@ public class InventoryDAO {
 
   /**
    * Save Inventory.
+   * 
    * @param inventory Inventory to Save/Update.
    * @return Created/Updated Inventory.
    */
   public Inventory create(Inventory inventory) {
-    // TODO
-    return null;
+    // Set the inventory mongo ID to null
+    inventory.setId(null);
+
+    // Insert/Update the inventory, returning the saved inventory object
+    return this.mongoTemplate.save(inventory);
   }
 
   /**
    * Retrieve Inventory.
+   * 
    * @param id Inventory id to Retrieve.
    * @return Found Inventory.
    */
@@ -67,7 +74,8 @@ public class InventoryDAO {
 
   /**
    * Update Inventory.
-   * @param id Inventory id to Update.
+   * 
+   * @param id        Inventory id to Update.
    * @param inventory Inventory to Update.
    * @return Updated Inventory.
    */
@@ -78,6 +86,7 @@ public class InventoryDAO {
 
   /**
    * Delete Inventory By Id.
+   * 
    * @param id Id of Inventory.
    * @return Deleted Inventory.
    */

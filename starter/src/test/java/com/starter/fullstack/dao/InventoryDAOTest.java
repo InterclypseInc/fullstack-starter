@@ -53,12 +53,26 @@ public class InventoryDAOTest {
     Assert.assertFalse(actualInventory.isEmpty());
   }
 
+  /**
+   * Test Create method.
+   */
   @Test
-  public void create(){
+  public void create() {
     Inventory inventory = new Inventory();
+    inventory.setId("FIRST");
     inventory.setName(NAME);
     inventory.setProductType(PRODUCT_TYPE);
+    inventory.setDescription("Product 1");
     this.inventoryDAO.create(inventory);
-    Assert.assertEquals(1,this.inventoryDAO.findAll().size());
+    // should only be 1 inventory in the database
+    Assert.assertEquals(1, this.mongoTemplate.findAll(Inventory.class).size());
+    // the names should match
+    Assert.assertEquals(NAME, this.mongoTemplate.findAll(Inventory.class).get(0).getName());
+    // the product types should match
+    Assert.assertEquals(PRODUCT_TYPE, this.mongoTemplate.findAll(Inventory.class).get(0).getProductType());
+    // the descriptions should match
+    Assert.assertEquals("Product 1", this.mongoTemplate.findAll(Inventory.class).get(0).getDescription());
+    // the IDs should NOT match because the ID gets set to null in the create method
+    Assert.assertNotEquals("FIRST", this.mongoTemplate.findAll(Inventory.class).get(0).getId());
   }
 }

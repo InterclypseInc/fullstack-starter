@@ -64,7 +64,7 @@ public class InventoryDAO {
    */
   public Optional<Inventory> retrieve(String id) {
     // TODO
-    return this.mongoTemplate.find(id);
+    //return this.mongoTemplate.find(id, Inventory);
   }
 
   /**

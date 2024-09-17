@@ -60,11 +60,11 @@ public class InventoryDAOTest {
     inventory.setProductType(PRODUCT_TYPE);
     inventoryDAO.create(inventory);
     List<Inventory> actualInventory = this.inventoryDAO.findAll();
-    Assert.equals
+    Assert.assertEquals(inventory, actualInventory.get(0));
   }
 
-  @Test
+  /*@Test
   public void retrieve() {
 
-  }
+  }*/
 }

@@ -1,9 +1,9 @@
 package com.starter.fullstack.dao;
 
 import com.starter.fullstack.api.Inventory;
+import jakarta.annotation.PostConstruct;
 import java.util.List;
 import java.util.Optional;
-import javax.annotation.PostConstruct;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.index.Index;
@@ -33,8 +33,8 @@ public class InventoryDAO {
   @PostConstruct
   public void setupIndexes() {
     IndexOperations indexOps = this.mongoTemplate.indexOps(Inventory.class);
-    indexOps.ensureIndex(new Index(NAME, Sort.Direction.ASC));
-    indexOps.ensureIndex(new Index(PRODUCT_TYPE, Sort.Direction.ASC));
+    indexOps.createIndex(new Index(NAME, Sort.Direction.ASC));
+    indexOps.createIndex(new Index(PRODUCT_TYPE, Sort.Direction.ASC));
   }
 
   /**

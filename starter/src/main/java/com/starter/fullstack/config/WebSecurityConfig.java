@@ -5,10 +5,11 @@ import java.util.Collections;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.config.Customizer;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -18,22 +19,24 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
  */
 @Configuration
 @EnableWebSecurity
-@EnableGlobalMethodSecurity(
+@EnableMethodSecurity(
     securedEnabled = true,
-    jsr250Enabled = true,
-    prePostEnabled = true
+    jsr250Enabled = true
 )
 @EnableConfigurationProperties(WebSecurityProperties.class)
-public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+public class WebSecurityConfig {
 
   /**
    * Define which URL paths should be secured.
    * @param http contains the url.
-   * @throws Exception if Exception occurs.
+   * @return the filter chain.
    */
-  @Override
-  protected void configure(HttpSecurity http) throws Exception {
-    http.cors().and().csrf().disable();
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Throwable {
+    return http
+      .cors(Customizer.withDefaults())
+      .csrf(csrf -> csrf.disable())
+      .build();
   }
 
   /**

@@ -5,11 +5,15 @@
 plugins {
     `java`
     `checkstyle`
-    id("org.springframework.boot") version "2.7.2"
+    id("org.springframework.boot") version "3.5.16"
     id("io.freefair.lombok") version "6.5.0.3"
 }
 
 apply(plugin = "io.spring.dependency-management")
+
+checkstyle {
+    toolVersion = "8.37"
+}
 
 repositories {
     mavenLocal()
@@ -26,9 +30,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-validation")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("junit:junit:4.13.2")
-    testImplementation("org.testcontainers:mongodb:1.17.3")
+    testImplementation("org.testcontainers:testcontainers-mongodb:2.0.5")
     compileOnly("org.projectlombok:lombok:1.18.24")
-    compileOnly("org.apache.maven.plugins:maven-surefire-plugin:2.22.2")
 }
 
 tasks.create<Exec>("import-sample-data") {
@@ -44,4 +47,8 @@ tasks.create<Exec>("import-sample-data-docker") {
 group = "com.starter"
 version = "0.0.1-SNAPSHOT"
 description = "starter-fullstack"
-java.sourceCompatibility = JavaVersion.VERSION_11
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}

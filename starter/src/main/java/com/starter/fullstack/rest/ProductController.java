@@ -2,8 +2,8 @@ package com.starter.fullstack.rest;
 
 import com.starter.fullstack.api.Product;
 import com.starter.fullstack.dao.ProductDAO;
+import jakarta.validation.Valid;
 import java.util.List;
-import javax.validation.Valid;
 import org.springframework.util.Assert;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;

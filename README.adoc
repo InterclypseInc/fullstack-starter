@@ -22,17 +22,19 @@ You will then either need to run the `source` command provided at the end of the
 ==== Java
 Once you have sdkman installed you can use it to install Java. One of the advantages of installing this way is that because sdk relies on symlinks, you can have multiple versions of Java installed at the same time and easily switch which one is the active version.
 
-Running `sdk list java` will have sdkman list out the available versions. This application supports up to java 11 so you can select a distribution that is based on Java 11.
+Running `sdk list java` will have sdkman list out the available versions. This application requires Java 17, so select a distribution that is based on Java 17. The exact patch versions on offer change over time, so check `sdk list java` for the current ones.
 
 For example:
 
-    sdk install java 11.0.12-open
+    sdk install java 17.0.13-tem
 
-will install version 11.0.12 provided by java.net. Alternatively you could select
+will install version 17.0.13 provided by Eclipse Temurin. Alternatively you could select
 
-    sdk install java 11.0.16.1-ms
+    sdk install java 17.0.13-ms
 
-to install 11.0.16.1 from Microsoft.
+to install 17.0.13 from Microsoft.
+
+Make sure the Java 17 install is the *active* one (`sdk use java 17.0.13-tem`, or `sdk default java 17.0.13-tem` to make it permanent) before running any gradle commands. Gradle itself has to run on Java 17 — Spring Boot's gradle plugin is compiled for 17, so an older JDK fails at configuration time with `No matching variant of org.springframework.boot:spring-boot-gradle-plugin ... compatible with Java 11`.
 
 ==== Gradle
 In addition to Java, sdkman also offers easy installs of other Java tooling, namely `gradle` and `maven`. In this case we are going to install `gradle`.

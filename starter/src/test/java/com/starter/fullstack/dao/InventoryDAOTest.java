@@ -49,4 +49,22 @@ public class InventoryDAOTest {
     List<Inventory> actualInventory = this.inventoryDAO.findAll();
     Assert.assertFalse(actualInventory.isEmpty());
   }
+  /**
+   * Test Create method.
+   */
+  @Test
+  public void create() {
+    Inventory inventory = new Inventory();
+    inventory.setId("TEST ID");
+    inventory.setName(NAME);
+    inventory.setProductType(PRODUCT_TYPE);
+
+    Inventory createdInventory = this.inventoryDAO.create(inventory);
+
+    Assert.assertNotNull(createdInventory);
+    Assert.assertNotNull(createdInventory.getId());
+    Assert.assertNotEquals("TEST ID", createdInventory.getId());
+    Assert.assertEquals(NAME, createdInventory.getName());
+    Assert.assertEquals(PRODUCT_TYPE, createdInventory.getProductType());
+  }
 }
